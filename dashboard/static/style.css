@@ -1,0 +1,10 @@
+body { font-family: sans-serif; margin: 24px; background: #f7f7f5; color: #222; }
+h1 { font-size: 20px; }
+.device-card { border-radius: 10px; padding: 16px; margin-bottom: 12px; color: #fff; width: 320px; }
+.band-low { background: #3b6d11; }
+.band-medium { background: #854f0b; }
+.band-high { background: #993c1d; }
+.band-critical { background: #791f1f; }
+table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+th, td { border: 1px solid #ccc; padding: 6px 10px; font-size: 13px; text-align: left; }
+th { background: #eee; }
