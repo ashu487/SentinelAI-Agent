@@ -201,6 +201,7 @@ class SentinelAI:
         self.beliefs = dict(PRIORS)
         self.last_hazard = "SAFE"
         self.confirmation = 0
+        self.pending_hazard = None
         self.history = []
 
     def step(self, mq2, mq135, temp, hum, flame, pir, current):
@@ -220,18 +221,32 @@ class SentinelAI:
         total = sum(self.beliefs.values()) or 1.0
         self.beliefs = {h: self.beliefs[h] / total for h in HYPOTHESES}
 
-        # --- Dominant hazard ---
-        dominant = max(self.beliefs, key=self.beliefs.get)
-        confidence = self.beliefs[dominant]
+        # --- Raw dominant hazard for this single reading ---
+        raw_dominant = max(self.beliefs, key=self.beliefs.get)
+        confidence = self.beliefs[raw_dominant]
 
         # --- Temporal confirmation (avoid single-sample flapping) ---
-        if dominant == self.last_hazard:
+        # FIX: the original version compared raw_dominant against
+        # last_hazard="SAFE" before any real reading had been observed,
+        # so a brand-new agent's very first .step() always fell back to
+        # SAFE regardless of sensor values. Now a new candidate is tracked
+        # in pending_hazard and only promoted after 2 consecutive matching
+        # readings, so the very first observation is never silently discarded.
+        if raw_dominant == self.last_hazard:
+            self.pending_hazard = None
+            self.confirmation = 0
+        elif raw_dominant == self.pending_hazard:
             self.confirmation += 1
         else:
+            self.pending_hazard = raw_dominant
+            self.confirmation = 1
+
+        if self.pending_hazard is not None and self.confirmation >= 2:
+            self.last_hazard = self.pending_hazard
+            self.pending_hazard = None
             self.confirmation = 0
-        if self.confirmation < 1:
-            dominant = self.last_hazard
-        self.last_hazard = dominant
+
+        dominant = self.last_hazard
 
         # --- Risk + level ---
         score = compute_risk(self.beliefs)

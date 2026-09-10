@@ -1,0 +1,6308 @@
+[
+  {
+    "timestamp": 1789036545446.1846,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 794.6742457497164,
+      "mq135": 627.0251465227163,
+      "temp": 25.471900223301827,
+      "hum": 54.93399387279783,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.32448111726362544
+    }
+  },
+  {
+    "timestamp": 1789036548425.682,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 782.1325682744531,
+      "mq135": 555.3246738463303,
+      "temp": 29.691305578479316,
+      "hum": 52.88949315539739,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.1558243086269164
+    }
+  },
+  {
+    "timestamp": 1789036548569.639,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 357.60358893308023,
+      "mq135": 470.1313107132568,
+      "temp": 27.7130517522476,
+      "hum": 45.44159523113157,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.2452117313984642
+    }
+  },
+  {
+    "timestamp": 1789036551505.0974,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 514.6724248122941,
+      "mq135": 303.2433517429949,
+      "temp": 28.575039005681482,
+      "hum": 51.98291839913385,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.3350445445695255
+    }
+  },
+  {
+    "timestamp": 1789036554585.0264,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 356.31135749094665,
+      "mq135": 404.9645151949867,
+      "temp": 24.608359571470107,
+      "hum": 50.54565085553094,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.25615494086374124
+    }
+  },
+  {
+    "timestamp": 1789036554652.3555,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 540.387929733258,
+      "mq135": 658.0535529961697,
+      "temp": 45.0,
+      "hum": 33.83736355415021,
+      "flame": 1,
+      "pir": 1,
+      "current": 1.0
+    }
+  },
+  {
+    "timestamp": 1789036557668.5916,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 333.4236838798171,
+      "mq135": 578.9145093145873,
+      "temp": 24.18459052707349,
+      "hum": 55.22185902471491,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.28773221730013826
+    }
+  },
+  {
+    "timestamp": 1789036557735.7888,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 586.4021863714146,
+      "mq135": 415.9903307359013,
+      "temp": 51.0,
+      "hum": 46.44596018179777,
+      "flame": 1,
+      "pir": 1,
+      "current": 1.4
+    }
+  },
+  {
+    "timestamp": 1789036560741.1082,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 434.1648693378371,
+      "mq135": 460.5885590547456,
+      "temp": 26.28635144202877,
+      "hum": 40.207500871034654,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.3587170278923172
+    }
+  },
+  {
+    "timestamp": 1789036560819.0295,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 808.8333021480973,
+      "mq135": 615.01744858035,
+      "temp": 57.0,
+      "hum": 31.64811658350654,
+      "flame": 1,
+      "pir": 0,
+      "current": 1.8
+    }
+  },
+  {
+    "timestamp": 1789036563842.5908,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 570.2655057900541,
+      "mq135": 387.5033572122649,
+      "temp": 27.23698060181553,
+      "hum": 44.38439434944249,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.13370950154821615
+    }
+  },
+  {
+    "timestamp": 1789036563921.0518,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [
+      "R3:high_temp",
+      "R4:overcurrent_heat"
+    ],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 631.73917831277,
+      "mq135": 407.94451423972924,
+      "temp": 63.0,
+      "hum": 48.664032555381084,
+      "flame": 1,
+      "pir": 1,
+      "current": 2.2
+    }
+  },
+  {
+    "timestamp": 1789036567028.0159,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [
+      "R3:high_temp",
+      "R4:overcurrent_heat"
+    ],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 738.8972421326184,
+      "mq135": 577.2975685961702,
+      "temp": 69.0,
+      "hum": 41.59337852046164,
+      "flame": 1,
+      "pir": 1,
+      "current": 2.6
+    }
+  },
+  {
+    "timestamp": 1789036569927.0789,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 861.8614862449792,
+      "mq135": 621.1668497857464,
+      "temp": 28.064959051085648,
+      "hum": 45.270003881112885,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.38260858376899953
+    }
+  },
+  {
+    "timestamp": 1789036570117.6467,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [
+      "R3:high_temp",
+      "R4:overcurrent_heat"
+    ],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 366.32088058435716,
+      "mq135": 487.72476026473043,
+      "temp": 75.0,
+      "hum": 32.1960553820653,
+      "flame": 1,
+      "pir": 1,
+      "current": 3.0
+    }
+  },
+  {
+    "timestamp": 1789036573027.529,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 355.97024383595203,
+      "mq135": 593.9998902069688,
+      "temp": 26.589697564999103,
+      "hum": 49.86709328809394,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.28762567072463674
+    }
+  },
+  {
+    "timestamp": 1789036576129.322,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 609.7472836545383,
+      "mq135": 559.7290240837742,
+      "temp": 27.59160808901446,
+      "hum": 46.44170348363067,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.12192554366613964
+    }
+  },
+  {
+    "timestamp": 1789036576240.7288,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 323.3499233918838,
+      "mq135": 218.37583646297207,
+      "temp": 28.27295871206961,
+      "hum": 59.55690316239237,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.15741899217820743
+    }
+  },
+  {
+    "timestamp": 1789036579233.146,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 540.2707308721813,
+      "mq135": 276.60945566171927,
+      "temp": 25.34036923695939,
+      "hum": 44.97024184179002,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.11872159259964277
+    }
+  },
+  {
+    "timestamp": 1789036579315.7478,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 216.13162931899262,
+      "mq135": 570.9623081744505,
+      "temp": 29.53772256941569,
+      "hum": 47.69499861623709,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.33956210459291264
+    }
+  },
+  {
+    "timestamp": 1789036582317.023,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 797.2909406907811,
+      "mq135": 651.1363660803995,
+      "temp": 24.10167341757708,
+      "hum": 43.63158987041334,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.14350545550771862
+    }
+  },
+  {
+    "timestamp": 1789036582442.3948,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 375.1570064579804,
+      "mq135": 504.6726115149144,
+      "temp": 29.627848112351167,
+      "hum": 50.30126488986062,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.15494352673278977
+    }
+  },
+  {
+    "timestamp": 1789036585416.813,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 320.76672135353135,
+      "mq135": 304.9955807652017,
+      "temp": 26.688524738799202,
+      "hum": 48.5352043281255,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.2634450184041065
+    }
+  },
+  {
+    "timestamp": 1789036585573.9224,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 368.47251787606695,
+      "mq135": 569.7993558515157,
+      "temp": 24.87986909498559,
+      "hum": 42.18369354945207,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.22475727613604699
+    }
+  },
+  {
+    "timestamp": 1789036588676.0884,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 787.0509600175915,
+      "mq135": 341.7721076968446,
+      "temp": 26.80856647582063,
+      "hum": 46.79825977025109,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.32294385971222955
+    }
+  },
+  {
+    "timestamp": 1789036591516.4988,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 1500.0,
+      "mq135": 1200.0,
+      "temp": 40.0,
+      "hum": 25.224368901049782,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.6741132771907239
+    }
+  },
+  {
+    "timestamp": 1789036591779.2502,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 210.71087930456193,
+      "mq135": 357.1754766637736,
+      "temp": 25.255996435393335,
+      "hum": 47.792198674648276,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.2347745101718477
+    }
+  },
+  {
+    "timestamp": 1789036594652.0303,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 1800.0,
+      "mq135": 1440.0,
+      "temp": 49.0,
+      "hum": 32.89589384400227,
+      "flame": 1,
+      "pir": 0,
+      "current": 1.397322182363051
+    }
+  },
+  {
+    "timestamp": 1789036597795.244,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [
+      "R1:high_gas"
+    ],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 2100.0,
+      "mq135": 1680.0,
+      "temp": 58.0,
+      "hum": 32.99539107821174,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.7335357102846688
+    }
+  },
+  {
+    "timestamp": 1789036597903.41,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 578.1021592565497,
+      "mq135": 627.1605257549988,
+      "temp": 45.0,
+      "hum": 31.066342536384546,
+      "flame": 1,
+      "pir": 0,
+      "current": 1.0
+    }
+  },
+  {
+    "timestamp": 1789036600932.1487,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [
+      "R1:high_gas",
+      "R3:high_temp",
+      "R6:gas_ignition"
+    ],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 2400.0,
+      "mq135": 1920.0,
+      "temp": 67.0,
+      "hum": 29.18759601961913,
+      "flame": 0,
+      "pir": 0,
+      "current": 0.8134181365254756
+    }
+  },
+  {
+    "timestamp": 1789036601028.8853,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 725.5786549038676,
+      "mq135": 718.4039633974414,
+      "temp": 51.0,
+      "hum": 41.771132672061455,
+      "flame": 1,
+      "pir": 1,
+      "current": 1.4
+    }
+  },
+  {
+    "timestamp": 1789036604064.0583,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [
+      "R1:high_gas",
+      "R3:high_temp",
+      "R5:flame_plus_heat",
+      "R6:gas_ignition"
+    ],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 2700.0,
+      "mq135": 2160.0,
+      "temp": 76.0,
+      "hum": 20.06524693188408,
+      "flame": 0,
+      "pir": 0,
+      "current": 0.9574562686056701
+    }
+  },
+  {
+    "timestamp": 1789036604176.4893,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 342.80184437804013,
+      "mq135": 377.50594757670785,
+      "temp": 57.0,
+      "hum": 34.43001671739095,
+      "flame": 1,
+      "pir": 1,
+      "current": 1.8
+    }
+  },
+  {
+    "timestamp": 1789036607177.2505,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [
+      "R1:high_gas",
+      "R2:poor_air_plus_gas",
+      "R3:high_temp",
+      "R5:flame_plus_heat",
+      "R6:gas_ignition"
+    ],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 3000.0,
+      "mq135": 2400.0,
+      "temp": 85.0,
+      "hum": 29.50628155591592,
+      "flame": 0,
+      "pir": 0,
+      "current": 1.0480186386204906
+    }
+  },
+  {
+    "timestamp": 1789036607276.1692,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [
+      "R3:high_temp",
+      "R4:overcurrent_heat"
+    ],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 894.6204752988622,
+      "mq135": 327.2807990795668,
+      "temp": 63.0,
+      "hum": 33.10786528683879,
+      "flame": 1,
+      "pir": 0,
+      "current": 2.2
+    }
+  },
+  {
+    "timestamp": 1789036610483.2883,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [
+      "R3:high_temp",
+      "R4:overcurrent_heat"
+    ],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 863.2115082705354,
+      "mq135": 899.2568556440118,
+      "temp": 69.0,
+      "hum": 45.12957672524737,
+      "flame": 1,
+      "pir": 0,
+      "current": 2.6
+    }
+  },
+  {
+    "timestamp": 1789036613309.801,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 740.1535447150618,
+      "mq135": 842.888016788549,
+      "temp": 45.0,
+      "hum": 46.571831935540935,
+      "flame": 1,
+      "pir": 0,
+      "current": 1.0
+    }
+  },
+  {
+    "timestamp": 1789036613624.1892,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [
+      "R3:high_temp",
+      "R4:overcurrent_heat"
+    ],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 704.8874835690665,
+      "mq135": 435.2322812810339,
+      "temp": 75.0,
+      "hum": 49.40401349425275,
+      "flame": 1,
+      "pir": 0,
+      "current": 3.0
+    }
+  },
+  {
+    "timestamp": 1789036616479.773,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 748.3610918306181,
+      "mq135": 725.3604301653759,
+      "temp": 51.0,
+      "hum": 46.27057031771747,
+      "flame": 1,
+      "pir": 0,
+      "current": 1.4
+    }
+  },
+  {
+    "timestamp": 1789036619588.6733,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 885.4335068493577,
+      "mq135": 508.90220227444166,
+      "temp": 57.0,
+      "hum": 32.3803957307894,
+      "flame": 1,
+      "pir": 0,
+      "current": 1.8
+    }
+  },
+  {
+    "timestamp": 1789036619746.5432,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 823.1175059321306,
+      "mq135": 591.144086288278,
+      "temp": 27.938512373446294,
+      "hum": 45.46009870021512,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.18833824586149361
+    }
+  },
+  {
+    "timestamp": 1789036622690.2202,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [
+      "R3:high_temp",
+      "R4:overcurrent_heat"
+    ],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 724.1466521368477,
+      "mq135": 320.7481751209339,
+      "temp": 63.0,
+      "hum": 43.84894776335685,
+      "flame": 1,
+      "pir": 0,
+      "current": 2.2
+    }
+  },
+  {
+    "timestamp": 1789036622874.9072,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 525.0936387553531,
+      "mq135": 497.0589315932289,
+      "temp": 29.271290638620194,
+      "hum": 44.54708757367028,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.14071336604010856
+    }
+  },
+  {
+    "timestamp": 1789036625819.044,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [
+      "R3:high_temp",
+      "R4:overcurrent_heat"
+    ],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 384.1831070874972,
+      "mq135": 533.9079510893183,
+      "temp": 69.0,
+      "hum": 40.59601343525726,
+      "flame": 1,
+      "pir": 1,
+      "current": 2.6
+    }
+  },
+  {
+    "timestamp": 1789036625993.9941,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 532.4480888669174,
+      "mq135": 512.5798661447973,
+      "temp": 26.690645075212522,
+      "hum": 44.42853344395803,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.3114557787018314
+    }
+  },
+  {
+    "timestamp": 1789036628929.6409,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [
+      "R3:high_temp",
+      "R4:overcurrent_heat"
+    ],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 857.8611267515878,
+      "mq135": 473.80104487707035,
+      "temp": 75.0,
+      "hum": 46.101421449124544,
+      "flame": 1,
+      "pir": 1,
+      "current": 3.0
+    }
+  },
+  {
+    "timestamp": 1789036629120.521,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 258.74524230921907,
+      "mq135": 493.60693834353214,
+      "temp": 25.263544189322605,
+      "hum": 42.14069881235007,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.11410479151233635
+    }
+  },
+  {
+    "timestamp": 1789036632262.2322,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 729.967845996821,
+      "mq135": 311.52399436613115,
+      "temp": 25.387358970957948,
+      "hum": 55.37641351248233,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.18146537762587234
+    }
+  },
+  {
+    "timestamp": 1789036635056.2456,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 436.60811176466916,
+      "mq135": 664.0898806773648,
+      "temp": 26.065346918970015,
+      "hum": 53.312348878302075,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.35619736825304005
+    }
+  },
+  {
+    "timestamp": 1789036635384.2034,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 846.0692885373544,
+      "mq135": 482.4361104143968,
+      "temp": 27.759983722964915,
+      "hum": 55.625578216525476,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.3333055778090466
+    }
+  },
+  {
+    "timestamp": 1789036638140.7886,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 744.4665777651902,
+      "mq135": 242.8918955735264,
+      "temp": 28.86428178384785,
+      "hum": 42.21367174014462,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.30157740083982576
+    }
+  },
+  {
+    "timestamp": 1789036641214.251,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 383.079360751658,
+      "mq135": 352.68546384409706,
+      "temp": 26.90713008041496,
+      "hum": 57.35424634016718,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.3812635937470895
+    }
+  },
+  {
+    "timestamp": 1789036641445.8997,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 1500.0,
+      "mq135": 1200.0,
+      "temp": 40.0,
+      "hum": 35.2017619850382,
+      "flame": 1,
+      "pir": 0,
+      "current": 1.131998757389526
+    }
+  },
+  {
+    "timestamp": 1789036644294.3118,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 545.6639744939562,
+      "mq135": 423.0123205363409,
+      "temp": 24.862969680358198,
+      "hum": 55.35102606036115,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.22275955403184586
+    }
+  },
+  {
+    "timestamp": 1789036644530.1794,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 1800.0,
+      "mq135": 1440.0,
+      "temp": 49.0,
+      "hum": 39.29896741236885,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.9120244733518204
+    }
+  },
+  {
+    "timestamp": 1789036647383.6682,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 484.8313297198746,
+      "mq135": 378.17731438884215,
+      "temp": 25.60833670666082,
+      "hum": 45.514995098393584,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.38757093701947387
+    }
+  },
+  {
+    "timestamp": 1789036647602.817,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [
+      "R1:high_gas"
+    ],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 2100.0,
+      "mq135": 1680.0,
+      "temp": 58.0,
+      "hum": 29.627567331460067,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.5897107704364289
+    }
+  },
+  {
+    "timestamp": 1789036650491.147,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 818.7257234814804,
+      "mq135": 510.6307467869481,
+      "temp": 27.30005592459542,
+      "hum": 44.92971048604502,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.29677364547004714
+    }
+  },
+  {
+    "timestamp": 1789036650724.2322,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [
+      "R1:high_gas",
+      "R3:high_temp",
+      "R6:gas_ignition"
+    ],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 2400.0,
+      "mq135": 1920.0,
+      "temp": 67.0,
+      "hum": 32.38115494228381,
+      "flame": 0,
+      "pir": 0,
+      "current": 0.6193032460257369
+    }
+  },
+  {
+    "timestamp": 1789036653861.851,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [
+      "R1:high_gas",
+      "R3:high_temp",
+      "R5:flame_plus_heat",
+      "R6:gas_ignition"
+    ],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 2700.0,
+      "mq135": 2160.0,
+      "temp": 76.0,
+      "hum": 23.65100132566099,
+      "flame": 0,
+      "pir": 0,
+      "current": 0.9234166094588071
+    }
+  },
+  {
+    "timestamp": 1789036656606.8088,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 352.92362315899584,
+      "mq135": 436.4932498661326,
+      "temp": 27.070555851675163,
+      "hum": 43.21458162923838,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.19640152267447475
+    }
+  },
+  {
+    "timestamp": 1789036656964.6492,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [
+      "R1:high_gas",
+      "R2:poor_air_plus_gas",
+      "R3:high_temp",
+      "R5:flame_plus_heat",
+      "R6:gas_ignition"
+    ],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 3000.0,
+      "mq135": 2400.0,
+      "temp": 85.0,
+      "hum": 22.905186760065508,
+      "flame": 0,
+      "pir": 0,
+      "current": 0.809228248632116
+    }
+  },
+  {
+    "timestamp": 1789036659741.563,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 645.9305183005738,
+      "mq135": 590.4764213499418,
+      "temp": 24.850740714252648,
+      "hum": 54.14031996156948,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.3073088871446358
+    }
+  },
+  {
+    "timestamp": 1789036662843.6775,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 702.5588419072387,
+      "mq135": 401.61777900356935,
+      "temp": 29.76026389122185,
+      "hum": 53.927957018639106,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.30306833991157633
+    }
+  },
+  {
+    "timestamp": 1789036663044.87,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 773.7743950774089,
+      "mq135": 234.6149846434839,
+      "temp": 29.222450377264032,
+      "hum": 46.9898551084897,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.38673844990366724
+    }
+  },
+  {
+    "timestamp": 1789036665972.975,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 723.0469905226838,
+      "mq135": 474.4638139867657,
+      "temp": 29.07034915228018,
+      "hum": 58.52622402371811,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.23781574829003777
+    }
+  },
+  {
+    "timestamp": 1789036666239.713,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 207.5846584151917,
+      "mq135": 567.1910819891377,
+      "temp": 24.812747631053707,
+      "hum": 52.654342003516,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.1575611410765563
+    }
+  },
+  {
+    "timestamp": 1789036669104.06,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 471.73761550609004,
+      "mq135": 450.12847645908187,
+      "temp": 26.805709359123213,
+      "hum": 57.80716875020423,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.37146486334734974
+    }
+  },
+  {
+    "timestamp": 1789036669329.8245,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 844.4885675500901,
+      "mq135": 316.79267290215125,
+      "temp": 25.70588745702681,
+      "hum": 48.37100154457691,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.24558153724991055
+    }
+  },
+  {
+    "timestamp": 1789036672207.8872,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 781.657380830353,
+      "mq135": 632.0758571712383,
+      "temp": 29.977363264424742,
+      "hum": 41.7217877882939,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.2807484395682638
+    }
+  },
+  {
+    "timestamp": 1789036672456.7231,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 644.7287324645404,
+      "mq135": 446.59688071718085,
+      "temp": 24.092291708167146,
+      "hum": 45.23896651906542,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.15599048699903523
+    }
+  },
+  {
+    "timestamp": 1789036675586.6401,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 322.57602527572385,
+      "mq135": 391.18943456024397,
+      "temp": 25.382802131674733,
+      "hum": 49.39529186254508,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.17827824857377628
+    }
+  },
+  {
+    "timestamp": 1789036678338.4292,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 900.0,
+      "mq135": 700.0,
+      "temp": 31.543496186697176,
+      "hum": 42.91171508697226,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.3886125911553602
+    }
+  },
+  {
+    "timestamp": 1789036678688.3303,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 507.4326435396987,
+      "mq135": 665.5161244328108,
+      "temp": 28.22819447508555,
+      "hum": 57.509264163754416,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.39644148327867634
+    }
+  },
+  {
+    "timestamp": 1789036681443.9407,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 1340.0,
+      "mq135": 1060.0,
+      "temp": 28.17082458924268,
+      "hum": 43.011789489911834,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.3584409154325128
+    }
+  },
+  {
+    "timestamp": 1789036684522.328,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 1780.0,
+      "mq135": 1420.0,
+      "temp": 32.23504027611354,
+      "hum": 53.97973783482356,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.3964431369068584
+    }
+  },
+  {
+    "timestamp": 1789036684808.5422,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 720.2806965314946,
+      "mq135": 350.245527798759,
+      "temp": 45.0,
+      "hum": 47.06828704208656,
+      "flame": 1,
+      "pir": 1,
+      "current": 1.0
+    }
+  },
+  {
+    "timestamp": 1789036687606.6167,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [
+      "R1:high_gas"
+    ],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 2220.0,
+      "mq135": 1780.0,
+      "temp": 30.448996795894224,
+      "hum": 46.35273148902844,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.25833672880836467
+    }
+  },
+  {
+    "timestamp": 1789036687925.6223,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 575.6225683351263,
+      "mq135": 820.467195776574,
+      "temp": 51.0,
+      "hum": 48.08825549573939,
+      "flame": 1,
+      "pir": 1,
+      "current": 1.4
+    }
+  },
+  {
+    "timestamp": 1789036690708.8503,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [
+      "R1:high_gas"
+    ],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 2660.0,
+      "mq135": 2140.0,
+      "temp": 30.087655827766053,
+      "hum": 47.07277059316782,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.1578315253849475
+    }
+  },
+  {
+    "timestamp": 1789036691027.977,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 618.7501369454166,
+      "mq135": 696.8906566303099,
+      "temp": 57.0,
+      "hum": 42.96703217283106,
+      "flame": 1,
+      "pir": 0,
+      "current": 1.8
+    }
+  },
+  {
+    "timestamp": 1789036693804.3364,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [
+      "R1:high_gas",
+      "R2:poor_air_plus_gas"
+    ],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 3100.0,
+      "mq135": 2500.0,
+      "temp": 33.162945955995646,
+      "hum": 50.25272407802316,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.14890618614857326
+    }
+  },
+  {
+    "timestamp": 1789036694132.7732,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [
+      "R3:high_temp",
+      "R4:overcurrent_heat"
+    ],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 375.203806593658,
+      "mq135": 414.8918291882485,
+      "temp": 63.0,
+      "hum": 40.76900138484349,
+      "flame": 1,
+      "pir": 0,
+      "current": 2.2
+    }
+  },
+  {
+    "timestamp": 1789036697225.8264,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [
+      "R3:high_temp",
+      "R4:overcurrent_heat"
+    ],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 619.9164999608338,
+      "mq135": 647.445079425594,
+      "temp": 69.0,
+      "hum": 34.61015655973451,
+      "flame": 1,
+      "pir": 0,
+      "current": 2.6
+    }
+  },
+  {
+    "timestamp": 1789036699911.8472,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 558.6694411280387,
+      "mq135": 575.8455080291578,
+      "temp": 45.0,
+      "hum": 34.76244811647878,
+      "flame": 1,
+      "pir": 1,
+      "current": 1.0
+    }
+  },
+  {
+    "timestamp": 1789036700306.445,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [
+      "R3:high_temp",
+      "R4:overcurrent_heat"
+    ],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 869.3958295727276,
+      "mq135": 427.5414460795886,
+      "temp": 75.0,
+      "hum": 42.11795983849013,
+      "flame": 1,
+      "pir": 0,
+      "current": 3.0
+    }
+  },
+  {
+    "timestamp": 1789036703009.1052,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 786.1821222373266,
+      "mq135": 545.0174920279961,
+      "temp": 51.0,
+      "hum": 45.268703662951054,
+      "flame": 1,
+      "pir": 0,
+      "current": 1.4
+    }
+  },
+  {
+    "timestamp": 1789036706149.0405,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 432.54155148775186,
+      "mq135": 610.1515956300992,
+      "temp": 57.0,
+      "hum": 35.3029115176679,
+      "flame": 1,
+      "pir": 1,
+      "current": 1.8
+    }
+  },
+  {
+    "timestamp": 1789036706389.7388,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 1500.0,
+      "mq135": 1200.0,
+      "temp": 40.0,
+      "hum": 29.91777931230432,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.7778496349102403
+    }
+  },
+  {
+    "timestamp": 1789036709291.9575,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [
+      "R3:high_temp",
+      "R4:overcurrent_heat"
+    ],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 349.74935291611285,
+      "mq135": 860.5723702700553,
+      "temp": 63.0,
+      "hum": 34.9940433844365,
+      "flame": 1,
+      "pir": 0,
+      "current": 2.2
+    }
+  },
+  {
+    "timestamp": 1789036709564.9363,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 1800.0,
+      "mq135": 1440.0,
+      "temp": 49.0,
+      "hum": 29.026978139408712,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.7621593585440819
+    }
+  },
+  {
+    "timestamp": 1789036712386.2422,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [
+      "R3:high_temp",
+      "R4:overcurrent_heat"
+    ],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 773.6129669475577,
+      "mq135": 325.69584015052163,
+      "temp": 69.0,
+      "hum": 35.92309538950238,
+      "flame": 1,
+      "pir": 1,
+      "current": 2.6
+    }
+  },
+  {
+    "timestamp": 1789036712696.7236,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [
+      "R1:high_gas"
+    ],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 2100.0,
+      "mq135": 1680.0,
+      "temp": 58.0,
+      "hum": 35.054085212631044,
+      "flame": 1,
+      "pir": 0,
+      "current": 1.0290537815425247
+    }
+  },
+  {
+    "timestamp": 1789036715479.5378,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [
+      "R3:high_temp",
+      "R4:overcurrent_heat"
+    ],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 587.8842929409902,
+      "mq135": 849.1673618947825,
+      "temp": 75.0,
+      "hum": 49.883494553280016,
+      "flame": 1,
+      "pir": 0,
+      "current": 3.0
+    }
+  },
+  {
+    "timestamp": 1789036715820.4915,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [
+      "R1:high_gas",
+      "R3:high_temp",
+      "R6:gas_ignition"
+    ],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 2400.0,
+      "mq135": 1920.0,
+      "temp": 67.0,
+      "hum": 22.502254137257182,
+      "flame": 0,
+      "pir": 0,
+      "current": 0.6468383494958863
+    }
+  },
+  {
+    "timestamp": 1789036718888.314,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [
+      "R1:high_gas",
+      "R3:high_temp",
+      "R5:flame_plus_heat",
+      "R6:gas_ignition"
+    ],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 2700.0,
+      "mq135": 2160.0,
+      "temp": 76.0,
+      "hum": 21.486710540561738,
+      "flame": 0,
+      "pir": 0,
+      "current": 0.5313741287697297
+    }
+  },
+  {
+    "timestamp": 1789036721580.7603,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 354.2420602591264,
+      "mq135": 362.99256679509693,
+      "temp": 45.0,
+      "hum": 39.164209293887964,
+      "flame": 1,
+      "pir": 0,
+      "current": 1.0
+    }
+  },
+  {
+    "timestamp": 1789036722002.9185,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [
+      "R1:high_gas",
+      "R2:poor_air_plus_gas",
+      "R3:high_temp",
+      "R5:flame_plus_heat",
+      "R6:gas_ignition"
+    ],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 3000.0,
+      "mq135": 2400.0,
+      "temp": 85.0,
+      "hum": 26.722612845293803,
+      "flame": 0,
+      "pir": 0,
+      "current": 1.2066194424281034
+    }
+  },
+  {
+    "timestamp": 1789036724700.4692,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 357.2407718365582,
+      "mq135": 695.7078443748646,
+      "temp": 51.0,
+      "hum": 37.29560907662886,
+      "flame": 1,
+      "pir": 1,
+      "current": 1.4
+    }
+  },
+  {
+    "timestamp": 1789036727802.226,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 439.62087981962003,
+      "mq135": 639.1380944642431,
+      "temp": 57.0,
+      "hum": 40.51577112128396,
+      "flame": 1,
+      "pir": 0,
+      "current": 1.8
+    }
+  },
+  {
+    "timestamp": 1789036728082.0798,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 235.5291806337798,
+      "mq135": 432.48762442229093,
+      "temp": 24.37635809148108,
+      "hum": 55.78452729079387,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.37131456077478653
+    }
+  },
+  {
+    "timestamp": 1789036730883.9126,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [
+      "R3:high_temp",
+      "R4:overcurrent_heat"
+    ],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 487.69057369571794,
+      "mq135": 871.8569716086439,
+      "temp": 63.0,
+      "hum": 39.911189786065364,
+      "flame": 1,
+      "pir": 1,
+      "current": 2.2
+    }
+  },
+  {
+    "timestamp": 1789036731180.816,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 248.2598450760511,
+      "mq135": 502.19619955807315,
+      "temp": 24.680794672627112,
+      "hum": 42.28124055653927,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.15655784790552857
+    }
+  },
+  {
+    "timestamp": 1789036733996.3005,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [
+      "R3:high_temp",
+      "R4:overcurrent_heat"
+    ],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 838.6140108998901,
+      "mq135": 712.8097042016783,
+      "temp": 69.0,
+      "hum": 35.86908868809397,
+      "flame": 1,
+      "pir": 1,
+      "current": 2.6
+    }
+  },
+  {
+    "timestamp": 1789036734293.7288,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 559.0628470486167,
+      "mq135": 323.01156406132543,
+      "temp": 24.170360741878522,
+      "hum": 58.49266257065466,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.2190235252193334
+    }
+  },
+  {
+    "timestamp": 1789036737111.8643,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [
+      "R3:high_temp",
+      "R4:overcurrent_heat"
+    ],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 707.0130054207859,
+      "mq135": 574.8729703346526,
+      "temp": 75.0,
+      "hum": 41.92025118518946,
+      "flame": 1,
+      "pir": 1,
+      "current": 3.0
+    }
+  },
+  {
+    "timestamp": 1789036737412.1194,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 782.3785966985632,
+      "mq135": 310.5639602589766,
+      "temp": 26.497492356862075,
+      "hum": 51.57094473115494,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.3215136241559672
+    }
+  },
+  {
+    "timestamp": 1789036740575.3794,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 331.08333620901504,
+      "mq135": 475.2147182533978,
+      "temp": 27.648397136483567,
+      "hum": 50.868505211817144,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.15062599066650528
+    }
+  },
+  {
+    "timestamp": 1789036743187.4211,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 671.929886873316,
+      "mq135": 607.1322628189168,
+      "temp": 25.789901433509257,
+      "hum": 41.23947258294651,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.2462693507101673
+    }
+  },
+  {
+    "timestamp": 1789036743685.7507,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 520.6266074830694,
+      "mq135": 583.9403932061972,
+      "temp": 29.58971073913024,
+      "hum": 45.412087745408286,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.3592454404941865
+    }
+  },
+  {
+    "timestamp": 1789036746310.178,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 837.1632933067664,
+      "mq135": 267.1114567772259,
+      "temp": 25.222967808209763,
+      "hum": 49.43841025776882,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.17662419816121797
+    }
+  },
+  {
+    "timestamp": 1789036749408.442,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 440.3159942203233,
+      "mq135": 698.4988637404211,
+      "temp": 26.942921519287484,
+      "hum": 40.966546231750876,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.11679311748185849
+    }
+  },
+  {
+    "timestamp": 1789036749798.91,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 256.5411931159324,
+      "mq135": 678.1805118288419,
+      "temp": 28.678237051420194,
+      "hum": 41.513546103345845,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.28104914325410096
+    }
+  },
+  {
+    "timestamp": 1789036752512.2693,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 379.9111516043152,
+      "mq135": 221.01281104759488,
+      "temp": 28.55939325110082,
+      "hum": 47.48650738834172,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.34128461450833086
+    }
+  },
+  {
+    "timestamp": 1789036752908.8813,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 475.0781794477338,
+      "mq135": 469.8883820854399,
+      "temp": 29.941932066049226,
+      "hum": 53.09222351761987,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.12763414788856764
+    }
+  },
+  {
+    "timestamp": 1789036755632.2039,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 317.51892098483387,
+      "mq135": 502.7853549974324,
+      "temp": 25.498951381755926,
+      "hum": 47.51494711044294,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.30670483979014906
+    }
+  },
+  {
+    "timestamp": 1789036756076.516,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 291.3252165244551,
+      "mq135": 300.25393657568407,
+      "temp": 28.829173721684448,
+      "hum": 53.41326985159317,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.1271385801024192
+    }
+  },
+  {
+    "timestamp": 1789036758748.169,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 748.1326389788454,
+      "mq135": 204.74260624903056,
+      "temp": 27.889571980757246,
+      "hum": 53.70390813157784,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.22129646196712716
+    }
+  },
+  {
+    "timestamp": 1789036759174.272,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 684.3035795596275,
+      "mq135": 661.5743826528887,
+      "temp": 26.06309204408392,
+      "hum": 57.09139612725076,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.2886902863377878
+    }
+  },
+  {
+    "timestamp": 1789036762323.1855,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 876.9253913941375,
+      "mq135": 410.2563826026218,
+      "temp": 28.318906476459503,
+      "hum": 45.30752482229792,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.3862869606566799
+    }
+  },
+  {
+    "timestamp": 1789036764882.8306,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 1500.0,
+      "mq135": 1200.0,
+      "temp": 40.0,
+      "hum": 23.52083594549548,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.620485981690796
+    }
+  },
+  {
+    "timestamp": 1789036765430.8438,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 232.38290077692417,
+      "mq135": 474.93014042660224,
+      "temp": 25.109777845917748,
+      "hum": 44.14481541301651,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.2514548565074046
+    }
+  },
+  {
+    "timestamp": 1789036767987.2773,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 1800.0,
+      "mq135": 1440.0,
+      "temp": 49.0,
+      "hum": 38.07520265031026,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.8291989487358403
+    }
+  },
+  {
+    "timestamp": 1789036771042.515,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [
+      "R1:high_gas"
+    ],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 2100.0,
+      "mq135": 1680.0,
+      "temp": 58.0,
+      "hum": 38.54187545791352,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.7087459851913281
+    }
+  },
+  {
+    "timestamp": 1789036771564.4546,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 329.8498484951497,
+      "mq135": 610.1761916946239,
+      "temp": 28.26447144814641,
+      "hum": 50.933218966977996,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.3595905232176688
+    }
+  },
+  {
+    "timestamp": 1789036774135.7852,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [
+      "R1:high_gas",
+      "R3:high_temp",
+      "R6:gas_ignition"
+    ],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 2400.0,
+      "mq135": 1920.0,
+      "temp": 67.0,
+      "hum": 22.982186292790292,
+      "flame": 0,
+      "pir": 0,
+      "current": 1.3214972862387595
+    }
+  },
+  {
+    "timestamp": 1789036774708.5664,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 236.02343931679138,
+      "mq135": 358.77061547688703,
+      "temp": 26.716683434443738,
+      "hum": 48.1909540488452,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.1257821978021862
+    }
+  },
+  {
+    "timestamp": 1789036777256.8113,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [
+      "R1:high_gas",
+      "R3:high_temp",
+      "R5:flame_plus_heat",
+      "R6:gas_ignition"
+    ],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 2700.0,
+      "mq135": 2160.0,
+      "temp": 76.0,
+      "hum": 24.29144273000037,
+      "flame": 0,
+      "pir": 0,
+      "current": 1.3940985038347393
+    }
+  },
+  {
+    "timestamp": 1789036777849.855,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 759.3625294354522,
+      "mq135": 233.79023312646095,
+      "temp": 27.90844794155199,
+      "hum": 42.72032559279725,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.3339916091065255
+    }
+  },
+  {
+    "timestamp": 1789036780384.7478,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [
+      "R1:high_gas",
+      "R2:poor_air_plus_gas",
+      "R3:high_temp",
+      "R5:flame_plus_heat",
+      "R6:gas_ignition"
+    ],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 3000.0,
+      "mq135": 2400.0,
+      "temp": 85.0,
+      "hum": 23.02132567798903,
+      "flame": 0,
+      "pir": 0,
+      "current": 1.2457934844628165
+    }
+  },
+  {
+    "timestamp": 1789036781035.3408,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 269.8692195670353,
+      "mq135": 381.4503345618451,
+      "temp": 29.73683745172664,
+      "hum": 50.83458393027381,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.2268541859906698
+    }
+  },
+  {
+    "timestamp": 1789036784116.9636,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 716.7772142136023,
+      "mq135": 291.5176793385573,
+      "temp": 27.158766934591874,
+      "hum": 47.83087026231706,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.30452668479081946
+    }
+  },
+  {
+    "timestamp": 1789036786493.44,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 833.8159934990226,
+      "mq135": 251.63968351894277,
+      "temp": 26.699372382667406,
+      "hum": 58.89563692193791,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.2462606271420903
+    }
+  },
+  {
+    "timestamp": 1789036787317.45,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 681.5181992552402,
+      "mq135": 397.467196407508,
+      "temp": 29.22657893804613,
+      "hum": 46.36110517441863,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.26943807473840087
+    }
+  },
+  {
+    "timestamp": 1789036789623.2344,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 820.9251371690538,
+      "mq135": 342.4575362649924,
+      "temp": 27.525951762059123,
+      "hum": 46.14805789036436,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.26255402250766047
+    }
+  },
+  {
+    "timestamp": 1789036792779.873,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 645.4962487904545,
+      "mq135": 603.8968129822467,
+      "temp": 27.79026944634348,
+      "hum": 57.86970591812045,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.19028538240451187
+    }
+  },
+  {
+    "timestamp": 1789036793426.1687,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 812.7583448678482,
+      "mq135": 237.33546925699565,
+      "temp": 29.791933842547085,
+      "hum": 52.76278498283109,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.3797106863171881
+    }
+  },
+  {
+    "timestamp": 1789036795933.4094,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 824.5526038501628,
+      "mq135": 523.421588871618,
+      "temp": 25.43385694608085,
+      "hum": 50.55525087914226,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.20718628694892663
+    }
+  },
+  {
+    "timestamp": 1789036796622.4583,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 432.1897842160448,
+      "mq135": 536.259458430842,
+      "temp": 29.11322786110432,
+      "hum": 56.62705735962916,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.3853649510107403
+    }
+  },
+  {
+    "timestamp": 1789036799079.7441,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 307.65933352998275,
+      "mq135": 303.58275349991845,
+      "temp": 27.914027323640948,
+      "hum": 48.229886812748305,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.3721542353520546
+    }
+  },
+  {
+    "timestamp": 1789036799799.9963,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 453.2723270437697,
+      "mq135": 595.8283051052549,
+      "temp": 25.076153015353654,
+      "hum": 58.13021479819889,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.2557406484041551
+    }
+  },
+  {
+    "timestamp": 1789036802246.0156,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 617.9257337925136,
+      "mq135": 601.7369043900233,
+      "temp": 24.29251756962785,
+      "hum": 57.851436069278606,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.17754757900080045
+    }
+  },
+  {
+    "timestamp": 1789036802903.0474,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 789.6791615014729,
+      "mq135": 268.0055338297424,
+      "temp": 25.524985185266072,
+      "hum": 57.11041333267164,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.1805304592013294
+    }
+  },
+  {
+    "timestamp": 1789036806097.4985,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 456.1642834321903,
+      "mq135": 540.24011480901,
+      "temp": 25.86757572493307,
+      "hum": 58.210193708436975,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.2084068550915983
+    }
+  },
+  {
+    "timestamp": 1789036808373.1392,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 280.5625345896668,
+      "mq135": 233.6167226936877,
+      "temp": 26.392719425857372,
+      "hum": 52.10330155995214,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.26450526182768896
+    }
+  },
+  {
+    "timestamp": 1789036809211.779,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 792.6928413327994,
+      "mq135": 478.75338875188913,
+      "temp": 29.070186020589915,
+      "hum": 50.43342064317169,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.15171588786834833
+    }
+  },
+  {
+    "timestamp": 1789036811506.8958,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 335.9837802683926,
+      "mq135": 479.9902747234362,
+      "temp": 24.26311448580619,
+      "hum": 42.918285726687685,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.191055602744826
+    }
+  },
+  {
+    "timestamp": 1789036814583.0283,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 617.9559763797022,
+      "mq135": 600.4782977242043,
+      "temp": 28.377062968867328,
+      "hum": 56.48024008294948,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.3477052269518731
+    }
+  },
+  {
+    "timestamp": 1789036815319.909,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 754.6770827982484,
+      "mq135": 398.19704004520247,
+      "temp": 28.654771451669696,
+      "hum": 54.071748914819416,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.3759868787325855
+    }
+  },
+  {
+    "timestamp": 1789036817749.3525,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 803.025546522172,
+      "mq135": 669.2889923766058,
+      "temp": 29.791283980909515,
+      "hum": 40.458998232725385,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.35433916969753754
+    }
+  },
+  {
+    "timestamp": 1789036818508.8652,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 800.9335867882164,
+      "mq135": 470.4140515283094,
+      "temp": 26.969821772507224,
+      "hum": 41.7403222852582,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.2980544482212531
+    }
+  },
+  {
+    "timestamp": 1789036820924.7546,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 667.9712671211512,
+      "mq135": 425.6849051245182,
+      "temp": 29.781851890988136,
+      "hum": 40.77509529406204,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.34560650642606916
+    }
+  },
+  {
+    "timestamp": 1789036821684.1282,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 697.0131037500296,
+      "mq135": 373.9777177273975,
+      "temp": 27.7258161779342,
+      "hum": 44.305974894150836,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.1539523470488446
+    }
+  },
+  {
+    "timestamp": 1789036824100.105,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 449.75924260973073,
+      "mq135": 247.81811224326538,
+      "temp": 26.576762688659684,
+      "hum": 53.839824435057146,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.37864594417276476
+    }
+  },
+  {
+    "timestamp": 1789036824867.3047,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 494.6535837469036,
+      "mq135": 417.55257180114,
+      "temp": 25.45194992959632,
+      "hum": 44.6009296287041,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.346097279432196
+    }
+  },
+  {
+    "timestamp": 1789036828054.214,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 691.0769872408728,
+      "mq135": 273.46755838332257,
+      "temp": 28.762680874183072,
+      "hum": 50.101624598738056,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.15771150622871996
+    }
+  },
+  {
+    "timestamp": 1789036830244.695,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 900.0,
+      "mq135": 700.0,
+      "temp": 33.646459843837334,
+      "hum": 43.65267817720458,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.1905216866637462
+    }
+  },
+  {
+    "timestamp": 1789036831235.4382,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 757.9917483815975,
+      "mq135": 218.92695176750215,
+      "temp": 25.546194746199824,
+      "hum": 56.96107526375838,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.11341710027826866
+    }
+  },
+  {
+    "timestamp": 1789036833383.5803,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 1340.0,
+      "mq135": 1060.0,
+      "temp": 30.669233921744556,
+      "hum": 59.7552822708783,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.21243408792559923
+    }
+  },
+  {
+    "timestamp": 1789036836555.8066,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 1780.0,
+      "mq135": 1420.0,
+      "temp": 29.597756167781682,
+      "hum": 50.65808633691002,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.24728967796059695
+    }
+  },
+  {
+    "timestamp": 1789036837370.5999,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 403.499925137833,
+      "mq135": 330.79970599585886,
+      "temp": 24.300205533914948,
+      "hum": 59.47770586410556,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.23536758480234857
+    }
+  },
+  {
+    "timestamp": 1789036839700.2476,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [
+      "R1:high_gas"
+    ],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 2220.0,
+      "mq135": 1780.0,
+      "temp": 28.327016820392185,
+      "hum": 40.365878700248764,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.36111293105514164
+    }
+  },
+  {
+    "timestamp": 1789036840585.3992,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 440.23913374009237,
+      "mq135": 482.33315753323103,
+      "temp": 27.89110072762922,
+      "hum": 59.815272248103874,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.24900108363590703
+    }
+  },
+  {
+    "timestamp": 1789036842846.2817,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [
+      "R1:high_gas"
+    ],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 2660.0,
+      "mq135": 2140.0,
+      "temp": 29.47571779244485,
+      "hum": 46.311712801348726,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.32062134722171354
+    }
+  },
+  {
+    "timestamp": 1789036843711.6345,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 789.7472228332294,
+      "mq135": 435.7276445348021,
+      "temp": 27.803841958429334,
+      "hum": 42.78885728974176,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.25179453390211465
+    }
+  },
+  {
+    "timestamp": 1789036846008.0435,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [
+      "R1:high_gas",
+      "R2:poor_air_plus_gas"
+    ],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 3100.0,
+      "mq135": 2500.0,
+      "temp": 28.456488691738947,
+      "hum": 58.76893883725559,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.18297545002271254
+    }
+  },
+  {
+    "timestamp": 1789036846937.4546,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 863.17163537008,
+      "mq135": 520.7805029078127,
+      "temp": 29.30161697302749,
+      "hum": 55.089031595214436,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.27849005351102296
+    }
+  },
+  {
+    "timestamp": 1789036850035.6526,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 212.54639005366926,
+      "mq135": 379.2878384478786,
+      "temp": 29.392550963792488,
+      "hum": 48.13582325498105,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.3355570743271605
+    }
+  },
+  {
+    "timestamp": 1789036852174.6306,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 1500.0,
+      "mq135": 1200.0,
+      "temp": 40.0,
+      "hum": 37.48147195775401,
+      "flame": 1,
+      "pir": 0,
+      "current": 1.3815355148671045
+    }
+  },
+  {
+    "timestamp": 1789036853176.6064,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 663.8281701965825,
+      "mq135": 306.78147971052664,
+      "temp": 27.042697808596767,
+      "hum": 54.59690237898481,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.3269804857591131
+    }
+  },
+  {
+    "timestamp": 1789036855300.9211,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 1800.0,
+      "mq135": 1440.0,
+      "temp": 49.0,
+      "hum": 29.875281233263657,
+      "flame": 1,
+      "pir": 0,
+      "current": 1.3481416699622761
+    }
+  },
+  {
+    "timestamp": 1789036858515.6694,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [
+      "R1:high_gas"
+    ],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 2100.0,
+      "mq135": 1680.0,
+      "temp": 58.0,
+      "hum": 28.153348267635927,
+      "flame": 1,
+      "pir": 0,
+      "current": 1.2984888985046592
+    }
+  },
+  {
+    "timestamp": 1789036859285.2922,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 842.9107915401313,
+      "mq135": 777.8412562651692,
+      "temp": 45.0,
+      "hum": 46.01721668346232,
+      "flame": 1,
+      "pir": 0,
+      "current": 1.0
+    }
+  },
+  {
+    "timestamp": 1789036861705.1892,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [
+      "R1:high_gas",
+      "R3:high_temp",
+      "R6:gas_ignition"
+    ],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 2400.0,
+      "mq135": 1920.0,
+      "temp": 67.0,
+      "hum": 22.931643376323567,
+      "flame": 0,
+      "pir": 0,
+      "current": 0.6098388336809121
+    }
+  },
+  {
+    "timestamp": 1789036862424.028,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 851.4306184695675,
+      "mq135": 420.7781101696312,
+      "temp": 51.0,
+      "hum": 44.50522048219816,
+      "flame": 1,
+      "pir": 0,
+      "current": 1.4
+    }
+  },
+  {
+    "timestamp": 1789036864843.6003,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [
+      "R1:high_gas",
+      "R3:high_temp",
+      "R5:flame_plus_heat",
+      "R6:gas_ignition"
+    ],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 2700.0,
+      "mq135": 2160.0,
+      "temp": 76.0,
+      "hum": 29.512340833979074,
+      "flame": 0,
+      "pir": 0,
+      "current": 0.7971541811095451
+    }
+  },
+  {
+    "timestamp": 1789036865608.7412,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 652.6367733803668,
+      "mq135": 478.17403205071406,
+      "temp": 57.0,
+      "hum": 44.69382261567986,
+      "flame": 1,
+      "pir": 0,
+      "current": 1.8
+    }
+  },
+  {
+    "timestamp": 1789036867938.826,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [
+      "R1:high_gas",
+      "R2:poor_air_plus_gas",
+      "R3:high_temp",
+      "R5:flame_plus_heat",
+      "R6:gas_ignition"
+    ],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 3000.0,
+      "mq135": 2400.0,
+      "temp": 85.0,
+      "hum": 26.38565551863289,
+      "flame": 0,
+      "pir": 0,
+      "current": 0.6441642976080869
+    }
+  },
+  {
+    "timestamp": 1789036868784.751,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [
+      "R3:high_temp",
+      "R4:overcurrent_heat"
+    ],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 847.2829905212404,
+      "mq135": 611.1165283184018,
+      "temp": 63.0,
+      "hum": 47.14842932567487,
+      "flame": 1,
+      "pir": 1,
+      "current": 2.2
+    }
+  },
+  {
+    "timestamp": 1789036871900.0088,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [
+      "R3:high_temp",
+      "R4:overcurrent_heat"
+    ],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 327.6411030789738,
+      "mq135": 426.6759704360778,
+      "temp": 69.0,
+      "hum": 49.085466617031095,
+      "flame": 1,
+      "pir": 1,
+      "current": 2.6
+    }
+  },
+  {
+    "timestamp": 1789036874094.809,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 215.239567205892,
+      "mq135": 312.6135509881934,
+      "temp": 25.743764211895428,
+      "hum": 58.769684567755704,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.3652933146431432
+    }
+  },
+  {
+    "timestamp": 1789036875084.1682,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [
+      "R3:high_temp",
+      "R4:overcurrent_heat"
+    ],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 767.9423942874014,
+      "mq135": 345.37240907219854,
+      "temp": 75.0,
+      "hum": 33.101792827042196,
+      "flame": 1,
+      "pir": 1,
+      "current": 3.0
+    }
+  },
+  {
+    "timestamp": 1789036877213.8696,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 755.3184820077088,
+      "mq135": 482.54913113296107,
+      "temp": 29.678314726160316,
+      "hum": 52.898223131185375,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.1005374173269788
+    }
+  },
+  {
+    "timestamp": 1789036880376.6692,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 410.4545696401576,
+      "mq135": 258.3099720889956,
+      "temp": 28.227741489731443,
+      "hum": 44.63283152689688,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.20540940182757927
+    }
+  },
+  {
+    "timestamp": 1789036881302.2822,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 761.0503120322559,
+      "mq135": 359.24271240124574,
+      "temp": 27.02299544906288,
+      "hum": 40.87524633184235,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.3071867084560921
+    }
+  },
+  {
+    "timestamp": 1789036883540.6792,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 559.913740131444,
+      "mq135": 676.6043475144976,
+      "temp": 29.756718737049646,
+      "hum": 40.838121974937145,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.23009232094600926
+    }
+  },
+  {
+    "timestamp": 1789036884493.1572,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 451.59306940883886,
+      "mq135": 529.1233209315894,
+      "temp": 29.038674590815127,
+      "hum": 52.76754838685135,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.14262764795160157
+    }
+  },
+  {
+    "timestamp": 1789036886684.3271,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 488.806337293825,
+      "mq135": 519.0890970121627,
+      "temp": 28.10720861842996,
+      "hum": 57.248756226400516,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.38039705057136264
+    }
+  },
+  {
+    "timestamp": 1789036887649.9055,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 791.713188036669,
+      "mq135": 202.97694958710727,
+      "temp": 24.465425986609276,
+      "hum": 52.776142515938105,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.20048747190443494
+    }
+  },
+  {
+    "timestamp": 1789036889881.5068,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 660.732650257893,
+      "mq135": 267.5245411288015,
+      "temp": 28.256558240700638,
+      "hum": 42.83522378773878,
+      "flame": 1,
+      "pir": 1,
+      "current": 0.15685946295028927
+    }
+  },
+  {
+    "timestamp": 1789036890898.7812,
+    "device_id": "lab-esp32-1",
+    "level": "GREEN",
+    "hazard": "SAFE",
+    "confidence": 1.0,
+    "risk_score": 0.0,
+    "beliefs": {
+      "SAFE": 1.0,
+      "GAS_LEAK": 0.0,
+      "OVERHEAT": 0.0,
+      "FIRE": 0.0
+    },
+    "rules_fired": [],
+    "actions": {
+      "exhaust_fan": false,
+      "buzzer": false,
+      "relay_power": true,
+      "red_led": false,
+      "yellow_led": false,
+      "green_led": true
+    },
+    "reading": {
+      "mq2": 754.0326042239242,
+      "mq135": 574.6693011523388,
+      "temp": 25.3034216401055,
+      "hum": 45.080414654928724,
+      "flame": 1,
+      "pir": 0,
+      "current": 0.25105651737276774
+    }
+  }
+]

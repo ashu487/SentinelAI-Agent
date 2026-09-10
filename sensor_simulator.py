@@ -2,14 +2,18 @@
 Simulates an ESP32 sending sensor readings over HTTP, so you can build and
 test the entire reasoning + dashboard pipeline before hardware is ready.
 
-Run this alongside backend/app.py:
+Run alongside backend/app.py:
     python backend/app.py        (terminal 1)
     python sensor_simulator.py   (terminal 2)
 
-Then open http://localhost:5000 to watch the dashboard react.
+Then open http://localhost:5000 to watch the dashboard react live (SSE).
 
-It mostly emits "normal" readings, and periodically injects a scenario
-(gas leak, fire, overheat) so you can see the reasoning engine respond.
+flame: 0 = flame detected (active-low sensor), 1 = no flame
+pir:   1 = human present, 0 = absent
+
+Each scenario is sent for several consecutive steps because SentinelAI
+requires 2 consecutive matching readings before it confirms a hazard
+change (temporal smoothing to avoid single-sample noise flapping).
 """
 
 import random
@@ -24,45 +28,49 @@ SCENARIOS = ["normal", "normal", "normal", "gas_leak", "fire", "overheat"]
 
 def normal_reading():
     return {
-        "gas": random.uniform(50, 150),
-        "smoke": random.uniform(20, 100),
-        "flame": False,
+        "mq2": random.uniform(200, 900),
+        "mq135": random.uniform(200, 700),
         "temp": random.uniform(24, 30),
-        "humidity": random.uniform(40, 60),
-        "motion": random.choice([True, False]),
+        "hum": random.uniform(40, 60),
+        "flame": 1,
+        "pir": random.choice([0, 1]),
+        "current": random.uniform(0.1, 0.4),
     }
 
 
 def gas_leak_reading(intensity):
     return {
-        "gas": 400 + intensity * 800,
-        "smoke": 100 + intensity * 300,
-        "flame": False,
-        "temp": random.uniform(25, 32),
-        "humidity": random.uniform(40, 60),
-        "motion": False,
+        "mq2": 900 + intensity * 2200,
+        "mq135": 700 + intensity * 1800,
+        "temp": random.uniform(28, 34),
+        "hum": random.uniform(40, 60),
+        "flame": 1,
+        "pir": 0,
+        "current": random.uniform(0.1, 0.4),
     }
 
 
 def fire_reading(intensity):
     return {
-        "gas": random.uniform(100, 300),
-        "smoke": 200 + intensity * 600,
-        "flame": intensity > 0.5,
-        "temp": 35 + intensity * 40,
-        "humidity": random.uniform(20, 40),
-        "motion": False,
+        "mq2": 1500 + intensity * 1500,
+        "mq135": 1200 + intensity * 1200,
+        "temp": 40 + intensity * 45,
+        "hum": random.uniform(20, 40),
+        "flame": 0 if intensity > 0.5 else 1,
+        "pir": 0,
+        "current": random.uniform(0.5, 1.5),
     }
 
 
 def overheat_reading(intensity):
     return {
-        "gas": random.uniform(50, 150),
-        "smoke": random.uniform(20, 100),
-        "flame": False,
-        "temp": 40 + intensity * 25,
-        "humidity": random.uniform(30, 50),
-        "motion": False,
+        "mq2": random.uniform(300, 900),
+        "mq135": random.uniform(300, 900),
+        "temp": 45 + intensity * 30,
+        "hum": random.uniform(30, 50),
+        "flame": 1,
+        "pir": random.choice([0, 1]),
+        "current": 1.0 + intensity * 2.0,
     }
 
 
@@ -89,8 +97,8 @@ def send(reading):
         r = requests.post(API_URL, json=payload, timeout=3)
         r.raise_for_status()
         result = r.json()
-        print(f"sent={reading} -> hazard={result['primary_hazard']} "
-              f"risk={result['risk_score']} band={result['risk_band']} actions={result['actions']}")
+        print(f"sent={reading} -> hazard={result['hazard']} "
+              f"level={result['level']} risk={result['risk_score']} actions={result['actions']}")
     except requests.RequestException as e:
         print(f"failed to reach backend: {e}")
 
