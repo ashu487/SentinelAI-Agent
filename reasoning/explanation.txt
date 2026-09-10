@@ -38,9 +38,9 @@ Bayes asks: *"Across all sensor evidence, which world am I most likely in?"*
 The difference matters because **sensors lie in overlapping ways**:
 
 | Reading      | GAS_LEAK world |OVERHEAT world | FIRE world       |
-|--------------|----------------|---------------|-----------------|
-| Gas high     | ✔ very likely | ✘ unlikely    | ✔ likely        |
-| Temp high    | ✘ unlikely    | ✔ very likely | ✔ very likely   |
+|--------------|----------------|---------------|------------------|
+| Gas high     | ✔ very likely | ✘ unlikely    | ✔ likely         |
+| Temp high    | ✘ unlikely    | ✔ very likely | ✔ very likely    |
 | Current high | ✘ unlikely    | ✔ likely      | maybe            |
 | Flame true   | ✘ rare        | ✘ rare        | ✔ almost certain |
 
@@ -149,12 +149,12 @@ $$
 
 Sum ≈ `0.0374`. Divide each by the sum:
 
-| Hypothesis | Raw | Posterior |
-|-----------|-----|-----------|
-| SAFE | 3.1 × 10⁻⁸ | **0.000** |
-| GAS_LEAK | 1.7 × 10⁻⁴ | **0.005** |
-| OVERHEAT | 1.35 × 10⁻³ | **0.036** |
-| FIRE | 3.59 × 10⁻² | **0.959** |
+| Hypothesis | Raw         | Posterior |
+|------------|-------------|-----------|
+| SAFE       | 3.1 × 10⁻⁸  | **0.000** |
+| GAS_LEAK   | 1.7 × 10⁻⁴  | **0.005** |
+| OVERHEAT   | 1.35 × 10⁻³ | **0.036** |
+| FIRE       | 3.59 × 10⁻² | **0.959** |
 
 The agent now believes **95.9% FIRE**. That's the confidence reported to the dashboard, and it drives a RED alert.
 
@@ -203,13 +203,13 @@ Re-normalizing after keeps the beliefs a valid probability distribution.
 
 ## 8. Common Pitfalls (worth knowing for your viva)
 
-| Pitfall             | What happens                                            | Fix                                                           |
-|---------------------|---------------------------------------------------------|---------------------------------------------------------------|
-| Zero likelihoods    | One `P(E\|H)=0` zeroes the whole product                | Use 0.01 instead of 0.00 (Laplace smoothing)                  |
-| Wrong priors        | Starting with `[0.7, 0.1, 0.1, 0.1]` biases toward SAFE | Start uniform, or learn from data                             |
-| Correlated sensors  | Naïve Bayes over-counts redundant evidence              | Group features or use a Bayesian network                      |
+| Pitfall             | What happens                                            | Fix                                          |
+|---------------------|---------------------------------------------------------|----------------------------------------------|
+| Zero likelihoods    | One `P(E\|H)=0` zeroes the whole product                | Use 0.01 instead of 0.00 (Laplace smoothing) |
+| Wrong priors        | Starting with `[0.7, 0.1, 0.1, 0.1]` biases toward SAFE | Start uniform, or learn from data            | 
+| Correlated sensors  | Naïve Bayes over-counts redundant evidence              | Group features or use a Bayesian network     |
 | Numerical underflow | Products of many small numbers → 0 on ESP32 floats      | Work in **log space**: `log P = log prior + Σ log likelihood` |
-| Stale likelihoods   | Real sensors drift                                      | Recalibrate `LIKELIHOOD` per lab                              |
+| Stale likelihoods   | Real sensors drift                                      | Recalibrate `LIKELIHOOD` per lab             |
 
 For ESP32 specifically, **log-space** is worth adopting — five features multiplied by four hypotheses with small floats can underflow `float32` after a few cycles. In log space you just add:
 
