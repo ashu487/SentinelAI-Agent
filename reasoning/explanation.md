@@ -126,24 +126,16 @@ Start with uniform priors: `[0.25, 0.25, 0.25, 0.25]`.
 ### Step 1 — Compute unnormalized posteriors
 
 **SAFE:**
-$$
-0.25 \times 0.05 \times 0.10 \times 0.05 \times 0.05 \times 0.01 \approx 3.1 \times 10^{-8}
-$$
+0.25 × 0.05 × 0.10 × 0.05 × 0.05 × 0.01 ≈ 3.10 × 10⁻⁸
 
 **GAS_LEAK:**
-$$
-0.25 \times 0.85 \times 0.80 \times 0.20 \times 0.10 \times 0.05 \approx 1.7 \times 10^{-4}
-$$
+0.25 × 0.85 × 0.80 × 0.20 × 0.10 × 0.05 ≈ 1.70 × 10⁻⁴
 
 **OVERHEAT:**
-$$
-0.25 \times 0.15 \times 0.30 \times 0.80 \times 0.75 \times 0.20 \approx 1.35 \times 10^{-3}
-$$
+0.25 × 0.15 × 0.30 × 0.80 × 0.75 × 0.20 ≈ 1.35 × 10⁻³
 
 **FIRE:**
-$$
-0.25 \times 0.70 \times 0.60 \times 0.90 \times 0.40 \times 0.95 \approx 3.59 \times 10^{-2}
-$$
+0.25 × 0.70 × 0.60 × 0.90 × 0.40 × 0.95 ≈ 3.59 × 10⁻²
 
 ### Step 2 — Normalize
 
