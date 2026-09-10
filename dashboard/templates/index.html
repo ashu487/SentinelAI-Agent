@@ -2,22 +2,67 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>SentinelAI dashboard</title>
+<title>SentinelAI Dashboard</title>
 <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-  <h1>SentinelAI — lab safety agent</h1>
 
-  <section id="devices"></section>
+<header>
+  <h1>🧪 SentinelAI — Lab Safety Agent</h1>
+  <div id="conn-status" class="conn offline">● offline</div>
+</header>
 
-  <h2>Recent events</h2>
-  <table id="events">
-    <thead>
-      <tr><th>Time</th><th>Device</th><th>Hazard</th><th>Risk</th><th>Band</th><th>Actions</th></tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+<!-- ── LIVE AGENT STATE ─────────────────────────────── -->
+<section id="live-card" class="card level-green">
+  <div class="live-header">
+    <div class="level-badge" id="level-badge">GREEN</div>
+    <div class="hazard" id="hazard">SAFE</div>
+  </div>
 
-  <script src="/static/script.js"></script>
+  <div class="metrics">
+    <div class="metric">
+      <span class="label">Risk</span>
+      <div class="bar"><div class="fill" id="risk-fill"></div></div>
+      <span class="value" id="risk-value">0</span>
+    </div>
+    <div class="metric">
+      <span class="label">Confidence</span>
+      <span class="value" id="conf-value">0.00</span>
+    </div>
+    <div class="metric">
+      <span class="label">Last update</span>
+      <span class="value" id="ts-value">—</span>
+    </div>
+  </div>
+
+  <div class="beliefs">
+    <div class="belief"><span>SAFE</span><div class="bbar"><i id="b-safe"></i></div><b id="b-safe-v">0.00</b></div>
+    <div class="belief"><span>GAS</span><div class="bbar"><i id="b-gas"></i></div><b id="b-gas-v">0.00</b></div>
+    <div class="belief"><span>HEAT</span><div class="bbar"><i id="b-heat"></i></div><b id="b-heat-v">0.00</b></div>
+    <div class="belief"><span>FIRE</span><div class="bbar"><i id="b-fire"></i></div><b id="b-fire-v">0.00</b></div>
+  </div>
+
+  <div class="rules">
+    <span class="label">Rules fired</span>
+    <div id="rules-list" class="chips">—</div>
+  </div>
+</section>
+
+<!-- ── DEVICES / ACTUATORS ──────────────────────────── -->
+<section id="devices"></section>
+
+<!-- ── EVENT HISTORY ────────────────────────────────── -->
+<h2>Recent events</h2>
+<table id="events">
+  <thead>
+    <tr>
+      <th>Time</th><th>Device</th><th>Hazard</th>
+      <th>Risk</th><th>Band</th><th>Actions</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<script src="/static/script.js"></script>
 </body>
 </html>
