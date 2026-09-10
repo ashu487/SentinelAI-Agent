@@ -1,72 +1,120 @@
-import sys
-import os
+"""
+SentinelAI bridge.
+- Receives JSON POSTs from ESP32 at /ingest
+- Pushes updates to browsers via SSE at /stream
+- Serves index.html and static files
+- Persists events to data/events.json
+"""
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import json, os, time, queue, threading
+from flask import Flask, request, jsonify, send_from_directory, Response
+from flask_cors import CORS
 
-from flask import Flask, request, jsonify, render_template
+BASE = os.path.dirname(os.path.abspath(__file__))
+DATA_DIR = os.path.join(BASE, "data")
+EVENTS_FILE = os.path.join(DATA_DIR, "events.json")
+os.makedirs(DATA_DIR, exist_ok=True)
 
-from reasoning.engine import process_reading
-from backend.database import init_db, log_event, recent_events
+app = Flask(__name__, static_folder="static", static_url_path="/static")
+CORS(app)
 
-app = Flask(
-    __name__,
-    template_folder=os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "dashboard", "templates"),
-    static_folder=os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "dashboard", "static"),
-)
+# ---------- in-memory pub/sub ----------
+subscribers = []          # list[queue.Queue]
+lock = threading.Lock()
 
-# holds latest state per device for the dashboard to poll
-_latest_state: dict = {}
+def broadcast(payload: dict):
+    with lock:
+        for q in subscribers:
+            try:
+                q.put_nowait(payload)
+            except queue.Full:
+                pass
 
+# ---------- persistence ----------
+def load_events():
+    if not os.path.exists(EVENTS_FILE):
+        return []
+    try:
+        with open(EVENTS_FILE, "r") as f:
+            return json.load(f)
+    except Exception:
+        return []
 
+def save_event(evt: dict):
+    events = load_events()
+    events.append(evt)
+    # keep last 500
+    events = events[-500:]
+    tmp = EVENTS_FILE + ".tmp"
+    with open(tmp, "w") as f:
+        json.dump(events, f, indent=2)
+    os.replace(tmp, EVENTS_FILE)
+
+# ---------- routes ----------
 @app.route("/")
-def dashboard():
-    return render_template("index.html")
+def index():
+    return send_from_directory(BASE, "index.html")
 
+@app.route("/ingest", methods=["POST"])
+def ingest():
+    data = request.get_json(force=True, silent=True) or {}
 
-@app.route("/api/sensor-data", methods=["POST"])
-def ingest_sensor_data():
-    """
-    This is the endpoint your ESP32 (or the simulator) POSTs to.
-    Expected JSON body:
-    {
-      "device_id": "lab-esp32-1",
-      "gas": 250, "smoke": 120, "flame": false,
-      "temp": 27.5, "humidity": 55, "motion": false
-    }
-    Returns the decided actions so the ESP32 knows what to actuate.
-    """
-    payload = request.get_json(force=True)
-    device_id = payload.get("device_id", "unknown-device")
-    reading = {
-        "gas": payload.get("gas", 0),
-        "smoke": payload.get("smoke", 0),
-        "flame": bool(payload.get("flame", False)),
-        "temp": payload.get("temp", 25),
-        "humidity": payload.get("humidity", 50),
-        "motion": bool(payload.get("motion", False)),
+    # ---- validate / normalize ----
+    level  = str(data.get("level", "GREEN")).upper()
+    hazard = str(data.get("hazard", "SAFE")).upper()
+    beliefs = data.get("beliefs") or {"SAFE": 0, "GAS_LEAK": 0, "OVERHEAT": 0, "FIRE": 0}
+    actions = data.get("actions") or {}
+
+    payload = {
+        "timestamp":   data.get("timestamp") or time.time(),
+        "device_id":   data.get("device_id", "esp32-01"),
+        "level":       level,
+        "hazard":      hazard,
+        "confidence":  float(data.get("confidence", 0)),
+        "risk_score":  float(data.get("risk_score", 0)),
+        "beliefs":     beliefs,
+        "rules_fired": data.get("rules_fired", []),
+        "actions":     actions,
     }
 
-    result = process_reading(device_id, reading)
-    log_event(result)
-    _latest_state[device_id] = result
+    save_event(payload)
+    broadcast(payload)
+    return jsonify({"ok": True}), 200
 
-    return jsonify({
-        "primary_hazard": result["decision"]["primary_hazard"],
-        "risk_score": result["decision"]["risk_score"],
-        "risk_band": result["decision"]["risk_band"],
-        "actions": result["decision"]["actions"],
-    })
+@app.route("/events")
+def events():
+    limit = int(request.args.get("limit", 100))
+    return jsonify(load_events()[-limit:])
 
+@app.route("/stream")
+def stream():
+    q: queue.Queue = queue.Queue(maxsize=100)
+    with lock:
+        subscribers.append(q)
 
-@app.route("/api/state")
-def get_state():
-    """Polled by the dashboard every couple seconds."""
-    return jsonify({
-        "devices": _latest_state,
-        "recent_events": recent_events(30),
-    })
+    def gen():
+        # send a heartbeat comment every 15 s so proxies don't kill the connection
+        try:
+            while True:
+                try:
+                    payload = q.get(timeout=15)
+                    yield f"data: {json.dumps(payload)}\n\n"
+                except queue.Empty:
+                    yield ": keep-alive\n\n"
+        finally:
+            with lock:
+                if q in subscribers:
+                    subscribers.remove(q)
 
+    return Response(gen(), mimetype="text/event-stream",
+                    headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"})
+
+# ---------- test helper: simulate an ESP32 ----------
+@app.route("/simulate", methods=["POST"])
+def simulate():
+    """POST {"level":"RED","hazard":"FIRE",...} to test the dashboard
+       without an ESP32 plugged in."""
+    return ingest()
 
 if __name__ == "__main__":
-    init_db()
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=5000, threaded=True)
