@@ -40,18 +40,35 @@ def norm(value, lo, hi):
     return max(0.0, min(1.0, (value - lo) / (hi - lo)))
 
 
+# Flame sensor calibration (ESP32 ADC range is typically 0-4095).
+# Still active-low even in analog mode: reading is HIGH with no flame and
+# DROPS as a flame gets closer/stronger.
+# TODO calibrate these two with your hardware teammate:
+#   FLAME_BASELINE -- raw reading in a clear room right now (~4000, per
+#                      what you're currently seeing)
+#   FLAME_DETECT   -- raw reading with an actual small flame held close
+#                      to the sensor (test this once you can do it safely)
+FLAME_BASELINE = 4000
+FLAME_DETECT = 800
+
+
 def extract_features(mq2, mq135, temp, hum, flame, pir, current):
     """
     Convert raw sensor values into normalized features.
-    flame : 0 = flame detected, 1 = no flame (typical digital sensor)
+    flame : raw analog ADC reading (0-4095 typical). HIGH (~FLAME_BASELINE)
+            = no flame, LOW (~FLAME_DETECT) = flame detected/close.
     pir   : 1 = human present,  0 = absent
     """
-    gas_level   = norm(mq2,   300, 3000)   # MQ-2
-    air_quality = norm(mq135, 400, 3000)   # MQ-135 (higher = worse)
-    temp_high   = norm(temp,   30,  70)    # 30°C safe, 70°C critical
-    current_high= norm(current, 0.5, 3.0)  # ACS712 (Amps)
-    flame_true  = (flame == 0)             # active-low flame sensor
-    human       = (pir == 1)
+    gas_level    = norm(mq2,   300, 3000)   # MQ-2
+    air_quality  = norm(mq135, 400, 3000)   # MQ-135 (higher = worse)
+    temp_high    = norm(temp,   30,  70)    # 30C safe, 70C critical
+    current_high = norm(current, 0.5, 3.0)  # ACS712 (Amps)
+    # norm() with lo > hi still interpolates correctly: a raw value at
+    # FLAME_BASELINE gives 0, at FLAME_DETECT gives 1, values in between
+    # scale linearly regardless of which threshold is numerically larger.
+    flame_level  = norm(flame, FLAME_BASELINE, FLAME_DETECT)  # 0=clear, 1=strong flame
+    flame_true   = flame_level > 0.5
+    human        = (pir == 1)
 
     return {
         "gas_level": gas_level,
@@ -60,6 +77,7 @@ def extract_features(mq2, mq135, temp, hum, flame, pir, current):
         "humidity": hum,
         "temp_high": temp_high,
         "current_high": current_high,
+        "flame_level": flame_level,
         "flame_true": flame_true,
         "human_present": human,
     }

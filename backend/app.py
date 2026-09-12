@@ -117,9 +117,9 @@ def ingest_sensor_data():
     {
       "device_id": "lab-esp32-1",
       "mq2": 1200, "mq135": 500, "temp": 28, "hum": 55,
-      "flame": 1, "pir": 1, "current": 0.4
+      "flame": 4000, "pir": 1, "current": 0.4
     }
-    flame: 0 = flame detected (active-low), 1 = no flame
+    flame: raw analog ADC reading (~4000 = no flame, drops as flame nears)
     pir:   1 = human present, 0 = absent
 
     This is where the actual reasoning happens -- runs the reading
@@ -135,7 +135,7 @@ def ingest_sensor_data():
         "mq135": float(data.get("mq135", 0)),
         "temp": float(data.get("temp", 25)),
         "hum": float(data.get("hum", 50)),
-        "flame": int(data.get("flame", 1)),
+        "flame": float(data.get("flame", 4000)),  # raw analog ADC, ~4000 = no flame baseline
         "pir": int(data.get("pir", 0)),
         "current": float(data.get("current", 0)),
     }
