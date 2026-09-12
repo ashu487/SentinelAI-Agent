@@ -76,6 +76,32 @@ def _i(v, d=0):
         return d
 
 
+# FLAME ANALOG -> DIGITAL CONVERSION
+FLAME_LOW  = 1200   # below this = flame detected
+FLAME_HIGH = 2500   # above this = no flame
+_last_flame_state = 1   # 1 = no flame (safe default)
+
+def analog_flame_to_digital(raw):
+    """
+    Convert a raw analog flame reading into 0 (flame detected) or 1
+    (no flame). Uses hysteresis so noise near the threshold doesn't
+    cause flip-flopping.
+    """
+    global _last_flame_state
+
+    try:
+        v = float(raw)
+    except (TypeError, ValueError):
+        return _last_flame_state   # keep previous value on garbage
+
+    if v <= FLAME_LOW:
+        _last_flame_state = 0      # definitely flame
+    elif v >= FLAME_HIGH:
+        _last_flame_state = 1      # definitely no flame
+    # else: leave _last_flame_state unchanged (hysteresis band)
+
+    return _last_flame_state
+
 def translate(data: dict) -> dict:
     """
     ESP32 flat payload -> SentinelAI.step() keyword args.
@@ -90,10 +116,7 @@ def translate(data: dict) -> dict:
     If raw ADC is received (>1), coerce by threshold.
     """
     raw_flame = data.get("flame", 1)
-    if isinstance(raw_flame, (int, float)) and raw_flame > 1:
-        flame = 0 if raw_flame > 2000 else 1
-    else:
-        flame = _i(raw_flame, 1)
+    flame = analog_flame_to_digital(raw_flame)
 
     return {
         "mq2":     _f(data.get("mq2", 0)),
