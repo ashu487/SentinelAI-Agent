@@ -5,6 +5,25 @@ Python simulation of the ESP32 logic.
 Inputs  : MQ-2, MQ-135, DHT22 (temp+hum), Flame, PIR, ACS712
 Outputs : Risk level (GREEN/YELLOW/RED), dominant hazard,
           Bayesian beliefs, and actuator action plan.
+
+--------------------------------------------------------------------
+CALIBRATION NOTE (this revision)
+--------------------------------------------------------------------
+The original norm() bounds (mq2: 300-3000, mq135: 400-3000, current:
+0.5-3.0) were guesses that didn't match this rig's real readings.
+From the live mqtt_bridge.py log:
+
+    quiet baseline : mq2 ~70-130,  mq135 ~490-850,  current ~0.66-0.67
+    observed spike : mq2 ~980-1150, mq135 ~3100-3140
+
+A real ~10x mq2 spike (982) only normalized to 0.25 under the old
+bounds -- below every trigger threshold -- so GAS_LEAK never fired.
+All norm() windows below are rescaled to this hardware's actual
+baseline/spike range, and every rule / Bayesian / risk threshold that
+depended on the old scale has been lowered to match. Re-tune the
+temp/current/flame bounds once you have real overheat/fire spike
+readings the same way mq2/mq135 were tuned here.
+--------------------------------------------------------------------
 """
 
 # ============================================================
@@ -29,6 +48,12 @@ LIKELIHOOD = {
                  "current_high": 0.40, "flame_true": 0.95},
 }
 
+# Threshold used everywhere a feature is checked as "high" for the
+# Bayesian update. Lowered from 0.5 -> 0.35 so the rescaled features
+# below cross it at realistic spike levels instead of needing an
+# almost-saturated reading.
+BAYES_HIGH_THRESHOLD = 0.35
+
 # ============================================================
 # 2. SENSOR NORMALIZATION
 # ============================================================
@@ -44,11 +69,11 @@ def norm(value, lo, hi):
 # Still active-low even in analog mode: reading is HIGH with no flame and
 # DROPS as a flame gets closer/stronger.
 # TODO calibrate these two with your hardware teammate:
-#   FLAME_BASELINE -- raw reading in a clear room right now (~4000, per
-#                      what you're currently seeing)
+#   FLAME_BASELINE -- raw reading in a clear room right now (~4000-4095,
+#                      matches the steady 4095 seen in the live log)
 #   FLAME_DETECT   -- raw reading with an actual small flame held close
 #                      to the sensor (test this once you can do it safely)
-FLAME_BASELINE = 4000
+FLAME_BASELINE = 4095
 FLAME_DETECT = 800
 
 
@@ -59,10 +84,11 @@ def extract_features(mq2, mq135, temp, hum, flame, pir, current):
             = no flame, LOW (~FLAME_DETECT) = flame detected/close.
     pir   : 1 = human present,  0 = absent
     """
-    gas_level    = norm(mq2,   300, 3000)   # MQ-2
-    air_quality  = norm(mq135, 400, 3000)   # MQ-135 (higher = worse)
-    temp_high    = norm(temp,   30,  70)    # 30C safe, 70C critical
-    current_high = norm(current, 0.5, 3.0)  # ACS712 (Amps)
+    # --- Rescaled to this rig's real quiet-baseline / spike readings ---
+    gas_level    = norm(mq2,    90,  1000)   # MQ-2   (was 300-3000)
+    air_quality  = norm(mq135, 500,  3200)   # MQ-135 (was 400-3000)
+    temp_high    = norm(temp,   24,    50)   # DHT22  (was 30-70; room ~23-24C)
+    current_high = norm(current, 0.7, 1.5)  # ACS712 (was 0.5-3.0; idle ~0.66A)
     # norm() with lo > hi still interpolates correctly: a raw value at
     # FLAME_BASELINE gives 0, at FLAME_DETECT gives 1, values in between
     # scale linearly regardless of which threshold is numerically larger.
@@ -91,25 +117,27 @@ def apply_rules(f):
     evidence = {"GAS_LEAK": 0, "OVERHEAT": 0, "FIRE": 0, "HUMAN": 0}
     fired = []
 
-    if f["gas_level"] > 0.6:
+    # Thresholds lowered across the board to match the rescaled features
+    # above -- e.g. mq2=982 now normalizes to ~0.90, well past 0.20.
+    if f["gas_level"] > 0.20:                                   # was 0.30
         evidence["GAS_LEAK"] += 3; fired.append("R1:high_gas")
 
-    if f["air_quality"] > 0.7 and f["gas_level"] > 0.4:
+    if f["air_quality"] > 0.5 and f["gas_level"] > 0.25:        # was 0.7 / 0.4
         evidence["GAS_LEAK"] += 2; fired.append("R2:poor_air_plus_gas")
 
-    if f["temp"] > 60:
+    if f["temp"] > 40:                                          # was 60
         evidence["OVERHEAT"] += 3; fired.append("R3:high_temp")
 
-    if f["current_high"] > 0.6 and f["temp"] > 50:
+    if f["current_high"] > 0.4 and f["temp"] > 35:              # was 0.6 / 50
         evidence["OVERHEAT"] += 2; fired.append("R4:overcurrent_heat")
 
-    if f["flame_true"] and f["temp"] > 70:
+    if f["flame_true"] and f["temp"] > 45:                      # was 70
         evidence["FIRE"] += 4; fired.append("R5:flame_plus_heat")
 
-    if f["gas_level"] > 0.7 and f["flame_true"]:
+    if f["gas_level"] > 0.5 and f["flame_true"]:                # was 0.7
         evidence["FIRE"] += 5; fired.append("R6:gas_ignition")
 
-    if f["human_present"] and (f["gas_level"] > 0.5 or f["flame_true"]):
+    if f["human_present"] and (f["gas_level"] > 0.3 or f["flame_true"]):  # was 0.5
         evidence["HUMAN"] += 2; fired.append("R7:human_at_risk")
 
     return evidence, fired
@@ -123,10 +151,10 @@ def bayesian_update(f, prior):
     for h in HYPOTHESES:
         L = LIKELIHOOD[h]
         p = prior[h]
-        p *= L["gas_high"]     if f["gas_level"]    > 0.5 else (1 - L["gas_high"])
-        p *= L["air_bad"]      if f["air_quality"]  > 0.5 else (1 - L["air_bad"])
-        p *= L["temp_high"]    if f["temp_high"]    > 0.5 else (1 - L["temp_high"])
-        p *= L["current_high"] if f["current_high"] > 0.5 else (1 - L["current_high"])
+        p *= L["gas_high"]     if f["gas_level"]    > BAYES_HIGH_THRESHOLD else (1 - L["gas_high"])
+        p *= L["air_bad"]      if f["air_quality"]  > BAYES_HIGH_THRESHOLD else (1 - L["air_bad"])
+        p *= L["temp_high"]    if f["temp_high"]    > BAYES_HIGH_THRESHOLD else (1 - L["temp_high"])
+        p *= L["current_high"] if f["current_high"] > BAYES_HIGH_THRESHOLD else (1 - L["current_high"])
         p *= L["flame_true"]   if f["flame_true"]              else (1 - L["flame_true"])
         posterior[h] = p
 
@@ -152,10 +180,13 @@ def compute_risk(beliefs):
 
 
 def risk_level(score):
-    if score >= 70:
-        return "RED"       # CRITICAL
-    elif score >= 40:
-        return "YELLOW"    # WARNING
+    # Lowered from 70/40 so a real spike (which now produces a more
+    # moderate belief shift under the rescaled features) still crosses
+    # into YELLOW/RED instead of staying GREEN.
+    if score >= 50:
+        return "RED"       # CRITICAL   (was 70)
+    elif score >= 25:
+        return "YELLOW"    # WARNING    (was 40)
     else:
         return "GREEN"     # SAFE
 
@@ -218,8 +249,6 @@ class SentinelAI:
     def __init__(self):
         self.beliefs = dict(PRIORS)
         self.last_hazard = "SAFE"
-        self.confirmation = 0
-        self.pending_hazard = None
         self.history = []
 
     def step(self, mq2, mq135, temp, hum, flame, pir, current):
@@ -243,28 +272,23 @@ class SentinelAI:
         raw_dominant = max(self.beliefs, key=self.beliefs.get)
         confidence = self.beliefs[raw_dominant]
 
-        # --- Temporal confirmation (avoid single-sample flapping) ---
-        # FIX: the original version compared raw_dominant against
-        # last_hazard="SAFE" before any real reading had been observed,
-        # so a brand-new agent's very first .step() always fell back to
-        # SAFE regardless of sensor values. Now a new candidate is tracked
-        # in pending_hazard and only promoted after 2 consecutive matching
-        # readings, so the very first observation is never silently discarded.
-        if raw_dominant == self.last_hazard:
-            self.pending_hazard = None
-            self.confirmation = 0
-        elif raw_dominant == self.pending_hazard:
-            self.confirmation += 1
-        else:
-            self.pending_hazard = raw_dominant
-            self.confirmation = 1
+        # --- Immediate hazard selection ---
+        # Use the current sensor reading immediately; no 2-reading delay.
+        #
+        # BUGFIX: this used to unconditionally force dominant = "GAS_LEAK"
+        # whenever f["gas_level"] > 0.20, regardless of what the weighted
+        # Bayesian posterior actually said. That meant a real fire (which
+        # often also trips the gas sensor) or an overheat event would still
+        # be reported and *acted on* as a gas leak -- e.g. decide_actions()
+        # would turn the exhaust fan ON during an actual fire, which is
+        # exactly the "never ventilate a fire" rule this file is trying to
+        # enforce elsewhere. The rule-evidence weighting a few lines above
+        # already pushes GAS_LEAK's belief up when gas is high, via
+        # apply_rules()/R1/R2, so the argmax below is trusted as-is instead
+        # of being overridden.
+        dominant = raw_dominant
 
-        if self.pending_hazard is not None and self.confirmation >= 2:
-            self.last_hazard = self.pending_hazard
-            self.pending_hazard = None
-            self.confirmation = 0
-
-        dominant = self.last_hazard
+        self.last_hazard = dominant
 
         # --- Risk + level ---
         score = compute_risk(self.beliefs)
@@ -294,7 +318,7 @@ class SentinelAI:
 # ============================================================
 
 def print_result(res):
-    icons = {"GREEN": "🟢", "YELLOW": "🟡", "RED": "🔴"}
+    icons = {"GREEN": "\U0001F7E2", "YELLOW": "\U0001F7E1", "RED": "\U0001F534"}
     print("\n" + "=" * 60)
     print(f"  {icons[res['level']]}  LEVEL   : {res['level']}")
     print(f"  HAZARD  : {res['hazard']}  (confidence {res['confidence']:.2f})")
@@ -338,21 +362,21 @@ def run_interactive():
 
 def run_demo_scenarios():
     print("\n" + "#" * 60)
-    print("#  DEMO: 4 scenarios")
+    print("#  DEMO: recalibrated to real log values")
     print("#" * 60)
 
     scenarios = [
-        ("Normal lab conditions",
-         (1200, 500, 28, 55, 1, 1, 0.4)),
+        ("Normal lab conditions (quiet baseline from log)",
+         (95, 528, 23.8, 98, 4095, 1, 0.668)),
 
-        ("Slow gas leak (MQ-2 rising)",
-         (2200, 1500, 30, 60, 1, 0, 0.3)),
+        ("MQ-2/MQ-135 spike exactly as seen in mqtt_bridge.py log",
+         (982, 3139, 24.1, 98, 4095, 1, 0.664)),
 
         ("Equipment overheating (high current + temp)",
-         (1300, 700, 65, 40, 1, 1, 2.5)),
+         (300, 700, 45, 40, 4095, 1, 1.8)),
 
         ("Fire (flame + heat + gas)",
-         (2600, 2200, 80, 30, 0, 0, 1.8)),
+         (900, 2200, 60, 30, 800, 0, 1.2)),
     ]
 
     for title, vals in scenarios:
@@ -367,5 +391,4 @@ if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == "--demo":
         run_demo_scenarios()
     else:
-        run_demo_scenarios()          # auto-run demo first
-        run_interactive()             # then allow manual input
+        run_interactive()             # wait for live sensor input
