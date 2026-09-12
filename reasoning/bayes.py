@@ -48,7 +48,7 @@ def extract_features(mq2, mq135, temp, hum, flame, pir, current):
     """
     gas_level   = norm(mq2,   300, 3000)   # MQ-2
     air_quality = norm(mq135, 400, 3000)   # MQ-135 (higher = worse)
-    temp_high   = norm(temp,   30,  70)    # 30°C safe, 70°C critical
+    temp_high = norm(temp, 45, 80)
     current_high= norm(current, 0.5, 3.0)  # ACS712 (Amps)
     flame_true  = (flame == 0)             # active-low flame sensor
     human       = (pir == 1)
@@ -81,6 +81,10 @@ def apply_rules(f):
 
     if f["temp"] > 60:
         evidence["OVERHEAT"] += 3; fired.append("R3:high_temp")
+
+    if f["temp"] < 35 and not f["flame_true"]:
+        evidence["SAFE"] = evidence.get("SAFE", 0) + 1
+        fired.append("R0:ambient_normal")
 
     if f["current_high"] > 0.6 and f["temp"] > 50:
         evidence["OVERHEAT"] += 2; fired.append("R4:overcurrent_heat")
