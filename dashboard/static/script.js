@@ -193,14 +193,38 @@ client.on('error', (err) => {
 client.on('message', (topic, payloadBuf) => {
   if (topic !== TOPIC_TELEMETRY) return;
 
-  let payload;
+  // ---- 1. decode ----
+  let text;
   try {
-    payload = JSON.parse(payloadBuf.toString());
+    text = payloadBuf.toString();
   } catch (e) {
-    console.error('[mqtt] bad JSON', e);
     return;
   }
 
+  // ---- 2. drop empty / near-empty payloads ----
+  // retained deletions arrive as zero-length or "{}" payloads
+  if (!text || text.trim() === '' || text.trim() === '{}') {
+    return;
+  }
+
+  // ---- 3. parse ----
+  let payload;
+  try {
+    payload = JSON.parse(text);
+  } catch (e) {
+    console.warn('[mqtt] skipping non-JSON message:', text);
+    return;
+  }
+
+  // ---- 4. require the fields we actually need ----
+  const required = ['level', 'hazard', 'risk_score', 'beliefs', 'actions'];
+  const missing = required.filter(k => payload[k] === undefined);
+  if (missing.length) {
+    console.warn('[mqtt] skipping malformed telemetry, missing:', missing, payload);
+    return;
+  }
+
+  // ---- 5. render ----
   render(payload);
   addEvent(payload);
 });
