@@ -1,23 +1,31 @@
 """
 sentinel_bridge.py
 ------------------
-Publishes SentinelAI agent output to the MQTT dashboard.
+The MQTT publisher. Imports the SentinelAI reasoning agent and pushes
+each reasoning result to the MQTT broker as JSON.
 
-Subscribes to:  (none — driven by SentinelAI's own reasoning loop)
-Publishes to:   sentinel/sentinel/telemetry
-Also listens on: sentinel/sentinel/cmd  (so dashboard toggles affect agent actions)
+Subscribes to:  (nothing required; add sentinel/<id>/cmd if you want
+                 manual overrides from a dashboard command panel)
+
+Publishes to:   sentinel/<DEVICE_ID>/telemetry
 """
 
+import sys
+import os
 import json
 import time
-import threading
+
+# Make the project root importable so `reasoning.bayes` resolves
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 import paho.mqtt.client as mqtt
+from reasoning.bayes import SentinelAI
 
 # ------------------------------------------------------------------
-# MQTT CONFIG  (matches your dashboard)
+# MQTT CONFIG — matches the dashboard
 # ------------------------------------------------------------------
 BROKER_HOST = "10.87.61.232"
-BROKER_PORT = 1883                 # native MQTT; browser uses 9001 (websockets)
+BROKER_PORT = 1883                  # native MQTT (browser uses 9001)
 MQTT_USER   = "sentinel"
 MQTT_PASS   = "87654321"
 
@@ -26,7 +34,48 @@ TOPIC_TELEMETRY = f"sentinel/{DEVICE_ID}/telemetry"
 TOPIC_COMMAND   = f"sentinel/{DEVICE_ID}/cmd"
 
 # ------------------------------------------------------------------
-# MAP SentinelAI level -> dashboard status color
+# MQTT CLIENT
+# ------------------------------------------------------------------
+client = mqtt.Client(client_id="sentinel-bridge")
+client.username_pw_set(MQTT_USER, MQTT_PASS)
+
+# Manual overrides from an optional command panel (all None = defer to agent)
+manual = {
+    "buzzer":     None,
+    "exhaust":    None,
+    "load_power": None,
+}
+
+def on_connect(c, userdata, flags, rc):
+    if rc == 0:
+        print(f"[bridge] connected to {BROKER_HOST}:{BROKER_PORT}")
+        c.subscribe(TOPIC_COMMAND)
+        print(f"[bridge] listening on {TOPIC_COMMAND}")
+    else:
+        print(f"[bridge] connect failed rc={rc}")
+
+def on_message(c, userdata, msg):
+    try:
+        data = json.loads(msg.payload.decode())
+    except Exception as e:
+        print(f"[bridge] bad cmd JSON: {e}")
+        return
+    for k in manual:
+        if k in data:
+            manual[k] = bool(data[k])
+    print(f"[bridge] manual override: {manual}")
+
+client.on_connect = on_connect
+client.on_message = on_message
+
+
+def start_mqtt():
+    client.connect(BROKER_HOST, BROKER_PORT, keepalive=30)
+    client.loop_start()
+
+
+# ------------------------------------------------------------------
+# TELEMETRY PUBLISHER
 # ------------------------------------------------------------------
 LEVEL_COLOR = {
     "GREEN":  "#2f6d4f",
@@ -34,141 +83,109 @@ LEVEL_COLOR = {
     "RED":    "#b3311f",
 }
 
-# 21-char max for OLED
-def oled_text(level, hazard):
+def _oled(level, hazard):
     return f"{level[:4]} {hazard[:15]}"[:21]
 
-# ------------------------------------------------------------------
-# MQTT CLIENT
-# ------------------------------------------------------------------
-client = mqtt.Client(client_id="sentinel-bridge")
-client.username_pw_set(MQTT_USER, MQTT_PASS)
 
-# Latest manual override from the dashboard (via /cmd)
-manual = {
-    "buzzer":    None,
-    "sprinkler": None,
-    "exhaust":   None,
-    "load_power": None,
-}
-
-def on_connect(c, userdata, flags, rc):
-    if rc == 0:
-        print(f"[bridge] connected to {BROKER_HOST}")
-        c.subscribe(TOPIC_COMMAND)
-        print(f"[bridge] listening on {TOPIC_COMMAND}")
-    else:
-        print(f"[bridge] connect failed rc={rc}")
-
-def on_message(c, userdata, msg):
-    """Handle manual commands from the dashboard."""
-    try:
-        data = json.loads(msg.payload.decode())
-    except Exception as e:
-        print(f"[bridge] bad cmd JSON: {e}")
-        return
-
-    for k in manual:
-        if k in data:
-            manual[k] = bool(data[k])
-
-    print(f"[bridge] manual override: {manual}")
-
-client.on_connect = on_connect
-client.on_message = on_message
-
-def start_mqtt():
-    client.connect(BROKER_HOST, BROKER_PORT, keepalive=30)
-    client.loop_start()
-
-# ------------------------------------------------------------------
-# TELEMETRY PUBLISHER
-# ------------------------------------------------------------------
-def publish_telemetry(reading: dict, result: dict, sensors: dict):
+def publish(reading: dict, result: dict):
     """
-    reading  : raw sensor readings {mq2, mq135, temp, hum, flame, pir, current}
-    result   : SentinelAI output {level, hazard, confidence, risk_score,
-                                  beliefs, rules_fired, actions}
-    sensors  : optional extra actuators e.g. {"sprinkler": False}
+    reading : {"mq2", "mq135", "temp", "hum", "flame", "pir", "current"}
+    result  : the dict returned by SentinelAI.step()
     """
     level  = result["level"]
     hazard = result["hazard"]
     acts   = result["actions"]
 
-    # Manual override wins for load_power; automatic wins for safety outputs
-    load_power = manual["load_power"] if manual["load_power"] is not None \
-                 else acts.get("relay_power", True)
+    # Safety interlocks — agent wins over manual input
+    exhaust   = acts.get("exhaust_fan", False)
+    buzzer    = acts.get("buzzer", False)
+    load_pw   = acts.get("relay_power", True)
 
-    # In a FIRE, exhaust must stay OFF for safety — never let dashboard override it
-    exhaust = acts.get("exhaust_fan", False)
-    if level == "RED" and hazard == "FIRE":
-        exhaust = False
+    if manual["buzzer"]     is not None and level != "RED":
+        buzzer  = manual["buzzer"]
+    if manual["exhaust"]    is not None and not (level == "RED" and hazard == "FIRE"):
+        exhaust = manual["exhaust"]
+    if manual["load_power"] is not None and hazard != "OVERHEAT":
+        load_pw = manual["load_power"]
 
     payload = {
-        # ---- raw sensors ----
-        "temperature":  round(float(reading["temp"]), 1),
-        "humidity":     round(float(reading["hum"]), 1),
-        "mq2":          int(reading["mq2"]),
-        "mq135":        int(reading["mq135"]),
-        "flame":        bool(reading["flame"] == 0),      # sensor is active-low
-        "motion":       bool(reading["pir"] == 1),
-        "current":      round(float(reading["current"]), 2),
+        "timestamp":    int(time.time() * 1000),
+        "device_id":    DEVICE_ID,
 
-        # ---- actuators (agent decisions) ----
-        "load_power":   bool(load_power),
-        "exhaust":      bool(exhaust),
-        "sprinkler":    bool(sensors.get("sprinkler", manual.get("sprinkler") or False)),
-        "buzzer":       bool(acts.get("buzzer", False)),
-
-        # ---- visualization ----
-        "status_light": LEVEL_COLOR.get(level, "#000000"),
-        "oled_message": oled_text(level, hazard),
-
-        # ---- extra: agent reasoning, dashboard ignores unknown keys ----
-        "risk_score":   result.get("risk_score"),
-        "confidence":   result.get("confidence"),
-        "beliefs":      result.get("beliefs"),
-        "rules_fired":  result.get("rules_fired", []),
+        # ---- reasoning output ----
+        "level":        level,
         "hazard":       hazard,
+        "confidence":   result["confidence"],
+        "risk_score":   result["risk_score"],
+        "beliefs":      result["beliefs"],
+        "rules_fired":  result["rules_fired"],
+
+        # ---- actuator commands (dashboard reads these) ----
+        "actions": {
+            "exhaust_fan": bool(exhaust),
+            "buzzer":      bool(buzzer),
+            "relay_power": bool(load_pw),
+            "red_led":     acts.get("red_led",    False),
+            "yellow_led":  acts.get("yellow_led", False),
+            "green_led":   acts.get("green_led",  False),
+        },
+
+        # ---- raw reading (dashboard shows this in the sensors panel) ----
+        "reading": reading,
     }
 
     client.publish(TOPIC_TELEMETRY, json.dumps(payload), qos=1)
-    print(f"[bridge] → {level} {hazard} risk={result.get('risk_score')}")
+    print(f"[bridge] → {level:6} {hazard:9} risk={result['risk_score']:5}  "
+          f"fan={payload['actions']['exhaust_fan']} "
+          f"buzzer={payload['actions']['buzzer']}")
     return payload
 
-# ------------------------------------------------------------------
-# DEMO — run standalone to see it work
-# ------------------------------------------------------------------
-if __name__ == "__main__":
-    import sys
-    sys.path.insert(0, ".")                  # so we can import sentinelai
-    try:
-        from sentinelai import SentinelAI    # your earlier Python class
-    except ImportError:
-        print("Could not import SentinelAI. Ensure sentinelai.py is in this folder.")
-        sys.exit(1)
 
+# ------------------------------------------------------------------
+# SIMULATOR — cycles through scenarios so you can watch the dashboard
+# ------------------------------------------------------------------
+SCENARIOS = [
+    # label         mq2  mq135 temp hum flm pir cur
+    ("normal",     1200,  500, 28, 55, 1, 1, 0.4),
+    ("normal",     1250,  520, 29, 54, 1, 1, 0.4),
+    ("gas leak",   2200, 1500, 30, 60, 1, 0, 0.3),
+    ("gas leak",   2400, 1700, 31, 61, 1, 0, 0.3),
+    ("overheat",   1300,  700, 65, 40, 1, 1, 2.5),
+    ("overheat",   1350,  720, 68, 39, 1, 1, 2.6),
+    ("fire",       2600, 2200, 80, 30, 0, 0, 1.8),
+    ("fire",       2700, 2300, 82, 29, 0, 0, 1.9),
+    ("recovering", 1500,  800, 45, 45, 1, 0, 0.6),
+    ("normal",     1200,  500, 28, 55, 1, 1, 0.4),
+]
+
+
+def run_simulator(interval=3.0):
     agent = SentinelAI()
-    start_mqtt()
-    time.sleep(1)
-
-    print("\n[bridge] running demo cycles — Ctrl+C to stop\n")
-
-    # cycle through scenarios repeatedly so you can see the dashboard react
-    scenarios = [
-        # mq2, mq135, temp, hum, flame, pir, current
-        (1200,  500, 28, 55, 1, 1, 0.4),   # GREEN
-        (2200, 1500, 30, 60, 1, 0, 0.3),   # YELLOW — gas
-        (1300,  700, 65, 40, 1, 1, 2.5),   # YELLOW — overheat
-        (2600, 2200, 80, 30, 0, 0, 1.8),   # RED   — fire
-    ]
-
+    print(f"[bridge] simulator started — publishing to {TOPIC_TELEMETRY}\n")
     i = 0
     while True:
-        s = scenarios[i % len(scenarios)]
-        reading = {"mq2": s[0], "mq135": s[1], "temp": s[2], "hum": s[3],
-                   "flame": s[4], "pir": s[5], "current": s[6]}
-        result = agent.step(*s)
-        publish_telemetry(reading, result, sensors={"sprinkler": False})
+        label, mq2, mq135, temp, hum, flame, pir, current = SCENARIOS[i % len(SCENARIOS)]
+
+        reading = {
+            "mq2": mq2, "mq135": mq135,
+            "temp": temp, "hum": hum,
+            "flame": flame, "pir": pir,
+            "current": current,
+        }
+        result = agent.step(**reading)
+        publish(reading, result)
+
         i += 1
-        time.sleep(4)
+        time.sleep(interval)
+
+
+# ------------------------------------------------------------------
+if __name__ == "__main__":
+    start_mqtt()
+    time.sleep(1)          # give MQTT a moment to connect
+    try:
+        run_simulator()
+    except KeyboardInterrupt:
+        print("\n[bridge] stopping")
+        client.loop_stop()
+        client.disconnect()
