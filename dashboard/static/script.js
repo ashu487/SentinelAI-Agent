@@ -1,8 +1,16 @@
 // ============================================================
-// SentinelAI dashboard client
-// Connects to /stream (SSE). Falls back to /events polling.
+// SentinelAI dashboard — MQTT client
+// Subscribes to:  sentinel/<device>/telemetry
 // ============================================================
 
+const DEVICE_ID   = "sentinel";
+const BROKER_URL  = "ws://10.87.61.232:9001";
+const MQTT_USER   = "sentinel";
+const MQTT_PASS   = "87654321";
+
+const TOPIC_TELEMETRY = `sentinel/${DEVICE_ID}/telemetry`;
+
+// ---------- DOM handles ----------
 const els = {
   conn:      document.getElementById('conn-status'),
   card:      document.getElementById('live-card'),
@@ -15,29 +23,51 @@ const els = {
   rules:     document.getElementById('rules-list'),
   devices:   document.getElementById('devices'),
   tbody:     document.querySelector('#events tbody'),
-  // beliefs
-  bSafe:  { bar: document.getElementById('b-safe'),  val: document.getElementById('b-safe-v')  },
-  bGas:   { bar: document.getElementById('b-gas'),   val: document.getElementById('b-gas-v')   },
-  bHeat:  { bar: document.getElementById('b-heat'),  val: document.getElementById('b-heat-v')  },
-  bFire:  { bar: document.getElementById('b-fire'),  val: document.getElementById('b-fire-v')  },
+  sensors: {
+    temp:    document.getElementById('s-temp'),
+    hum:     document.getElementById('s-hum'),
+    mq2:     document.getElementById('s-mq2'),
+    mq135:   document.getElementById('s-mq135'),
+    flame:   document.getElementById('s-flame'),
+    pir:     document.getElementById('s-pir'),
+    current: document.getElementById('s-current'),
+  },
+  beliefs: {
+    safe: { bar: document.getElementById('b-safe'), val: document.getElementById('b-safe-v') },
+    gas:  { bar: document.getElementById('b-gas'),  val: document.getElementById('b-gas-v') },
+    heat: { bar: document.getElementById('b-heat'), val: document.getElementById('b-heat-v') },
+    fire: { bar: document.getElementById('b-fire'), val: document.getElementById('b-fire-v') },
+  },
 };
 
+// ---------- device grid ----------
 const DEVICE_MAP = [
-  { key: 'exhaust_fan', label: 'Exhaust Fan',  dangerWhen: false },
-  { key: 'buzzer',      label: 'Buzzer',       dangerWhen: false },
-  { key: 'relay_power', label: 'Equipment',    dangerWhen: false, invert: true }, // OFF = cut power
-  { key: 'red_led',     label: 'Red LED',      dangerWhen: false },
-  { key: 'yellow_led',  label: 'Yellow LED',   dangerWhen: false },
-  { key: 'green_led',   label: 'Green LED',    dangerWhen: false },
+  { key: 'exhaust_fan', label: 'Exhaust Fan' },
+  { key: 'buzzer',      label: 'Buzzer' },
+  { key: 'relay_power', label: 'Equipment Power', invertDisplay: true },
+  { key: 'red_led',     label: 'Red LED' },
+  { key: 'yellow_led',  label: 'Yellow LED' },
+  { key: 'green_led',   label: 'Green LED' },
 ];
 
 // ---------- helpers ----------
-const fmt = (n, d = 2) => Number(n).toFixed(d);
+const fmt = (n, d = 1) =>
+  (typeof n === 'number' && Number.isFinite(n)) ? n.toFixed(d) : '—';
+
+function setConn(online, label) {
+  els.conn.textContent = label || (online ? '● live' : '● offline');
+  els.conn.classList.toggle('online', online);
+  els.conn.classList.toggle('offline', !online);
+}
+
+function setText(el, txt) {
+  if (el) el.textContent = txt;
+}
 
 function setBelief(set, value) {
   const pct = Math.max(0, Math.min(1, value)) * 100;
   set.bar.style.width = pct + '%';
-  set.val.textContent = fmt(value);
+  set.val.textContent = value.toFixed(2);
 }
 
 function renderDevices(actions) {
@@ -51,119 +81,129 @@ function renderDevices(actions) {
   }
   DEVICE_MAP.forEach(d => {
     const el = els.devices.querySelector(`[data-key="${d.key}"] .state`);
-    const raw = actions[d.key];
-    const on = d.invert ? !raw : raw;   // for "Equipment" OFF = safe
-    el.classList.remove('on','off','danger');
-    if (d.invert) {
-      // relay_power: ON means powered (safe), OFF means cut (danger state)
+    if (!el) return;
+    const raw = !!actions[d.key];
+    el.classList.remove('on', 'off', 'danger');
+
+    if (d.invertDisplay) {
       el.classList.add(raw ? 'on' : 'danger');
       el.textContent = raw ? 'POWERED' : 'CUT';
     } else {
-      el.classList.add(on ? 'on' : 'off');
-      el.textContent = on ? 'ON' : 'OFF';
+      el.classList.add(raw ? 'on' : 'off');
+      el.textContent = raw ? 'ON' : 'OFF';
     }
   });
 }
 
 function renderRules(rules) {
-  if (!rules || rules.length === 0) {
+  if (!Array.isArray(rules) || rules.length === 0) {
     els.rules.innerHTML = '<span class="chip">none</span>';
     return;
   }
   els.rules.innerHTML = rules.map(r => `<span class="chip">${r}</span>`).join('');
 }
 
-function renderEvent(row) {
-  const tr = document.createElement('tr');
-  const time = new Date(row.timestamp).toLocaleTimeString();
-  const actions = Object.entries(row.actions || {})
-    .map(([k, v]) => `${k}=${v ? 'ON' : 'OFF'}`)
-    .join(', ');
-  tr.innerHTML = `
-    <td>${time}</td>
-    <td>${row.device_id || 'esp32-01'}</td>
-    <td>${row.hazard}</td>
-    <td>${fmt(row.risk_score, 1)}</td>
-    <td><span class="band ${row.level}">${row.level}</span></td>
-    <td>${actions}</td>`;
-  return tr;
+function renderSensors(reading) {
+  if (!reading) return;
+  setText(els.sensors.temp,    fmt(reading.temp, 1) + ' °C');
+  setText(els.sensors.hum,     fmt(reading.hum,  1) + ' %');
+  setText(els.sensors.mq2,     reading.mq2     ?? '—');
+  setText(els.sensors.mq135,   reading.mq135   ?? '—');
+  setText(els.sensors.flame,   (reading.flame === 0 || reading.flame === false) ? 'DETECTED' : 'clear');
+  setText(els.sensors.pir,     (reading.pir   === 1 || reading.pir   === true)  ? 'occupied' : 'vacant');
+  setText(els.sensors.current, fmt(reading.current, 2) + ' A');
 }
 
-// ---------- main render ----------
 function render(payload) {
-  const { level, hazard, confidence, risk_score, beliefs, rules_fired, actions, timestamp } = payload;
+  const { level, hazard, confidence, risk_score, beliefs, rules_fired, actions, timestamp, reading } = payload;
 
-  // card theme
-  els.card.classList.remove('level-green','level-yellow','level-red');
-  els.card.classList.add('level-' + level.toLowerCase());
+  els.card.classList.remove('level-green', 'level-yellow', 'level-red');
+  els.card.classList.add('level-' + String(level).toLowerCase());
 
   els.badge.textContent  = level;
   els.hazard.textContent = hazard;
-  els.riskVal.textContent = fmt(risk_score, 1);
-  els.riskFill.style.width = Math.min(100, risk_score) + '%';
-  els.confVal.textContent = fmt(confidence);
-  els.tsVal.textContent   = new Date(timestamp).toLocaleTimeString();
+  els.riskVal.textContent = Number(risk_score).toFixed(1);
+  els.riskFill.style.width = Math.min(100, Number(risk_score)) + '%';
+  els.confVal.textContent = Number(confidence).toFixed(2);
+  els.tsVal.textContent   = timestamp
+    ? new Date(Number(timestamp)).toLocaleTimeString()
+    : new Date().toLocaleTimeString();
 
-  setBelief(els.bSafe, beliefs.SAFE     ?? 0);
-  setBelief(els.bGas,  beliefs.GAS_LEAK ?? 0);
-  setBelief(els.bHeat, beliefs.OVERHEAT ?? 0);
-  setBelief(els.bFire, beliefs.FIRE     ?? 0);
+  setBelief(els.beliefs.safe, beliefs?.SAFE     ?? 0);
+  setBelief(els.beliefs.gas,  beliefs?.GAS_LEAK ?? 0);
+  setBelief(els.beliefs.heat, beliefs?.OVERHEAT ?? 0);
+  setBelief(els.beliefs.fire, beliefs?.FIRE     ?? 0);
 
   renderRules(rules_fired);
   renderDevices(actions || {});
+  renderSensors(reading);
 }
 
 function addEvent(payload) {
-  // remove the empty placeholder if present
   const empty = els.tbody.querySelector('.empty-row');
   if (empty) empty.remove();
 
-  const tr = renderEvent(payload);
-  tr.style.opacity = 0;
-  els.tbody.prepend(tr);
-  requestAnimationFrame(() => tr.style.transition = 'opacity .4s', tr.style.opacity = 1);
+  const tr = document.createElement('tr');
+  const time = new Date(Number(payload.timestamp || Date.now())).toLocaleTimeString();
+  const actions = Object.entries(payload.actions || {})
+    .map(([k, v]) => `${k}=${v ? 'ON' : 'OFF'}`).join(', ');
 
-  // cap at 25 rows
+  tr.innerHTML = `
+    <td>${time}</td>
+    <td>${payload.device_id || 'esp32-01'}</td>
+    <td>${payload.hazard}</td>
+    <td>${Number(payload.risk_score).toFixed(1)}</td>
+    <td><span class="band ${payload.level}">${payload.level}</span></td>
+    <td>${actions}</td>`;
+  els.tbody.prepend(tr);
+
   while (els.tbody.children.length > 25) {
     els.tbody.removeChild(els.tbody.lastChild);
   }
 }
 
-function setConn(online) {
-  els.conn.textContent = online ? '● live' : '● offline';
-  els.conn.classList.toggle('online', online);
-  els.conn.classList.toggle('offline', !online);
-}
+// ---------- MQTT ----------
+setConn(false, '● connecting…');
 
-// ---------- bootstrap ----------
-async function loadHistory() {
+const client = mqtt.connect(BROKER_URL, {
+  username: MQTT_USER,
+  password: MQTT_PASS,
+  reconnectPeriod: 2000,
+  clean: true,
+  clientId: 'sentinel-dash-' + Math.random().toString(16).slice(2, 8),
+});
+
+client.on('connect', () => {
+  console.log('[mqtt] connected');
+  setConn(true, '● live');
+  client.subscribe(TOPIC_TELEMETRY, { qos: 1 }, (err) => {
+    if (err) console.error('[mqtt] subscribe failed', err);
+    else      console.log('[mqtt] subscribed to', TOPIC_TELEMETRY);
+  });
+});
+
+client.on('reconnect', () => setConn(false, '● reconnecting…'));
+client.on('close',     () => setConn(false, '● offline'));
+client.on('offline',   () => setConn(false, '● offline'));
+client.on('error', (err) => {
+  console.error('[mqtt] error', err);
+  setConn(false, '● error');
+});
+
+client.on('message', (topic, payloadBuf) => {
+  if (topic !== TOPIC_TELEMETRY) return;
+
+  let payload;
   try {
-    const res = await fetch('/events?limit=25');
-    const rows = await res.json();
-    els.tbody.innerHTML = '';
-    if (rows.length === 0) {
-      els.tbody.innerHTML = '<tr class="empty-row"><td colspan="6">No events yet.</td></tr>';
-      return;
-    }
-    rows.reverse().forEach(r => els.tbody.appendChild(renderEvent(r)));
-    render(rows[rows.length - 1]);
+    payload = JSON.parse(payloadBuf.toString());
   } catch (e) {
-    console.error('history load failed', e);
+    console.error('[mqtt] bad JSON', e);
+    return;
   }
-}
 
-function connectStream() {
-  const es = new EventSource('/stream');
-  es.onopen  = () => setConn(true);
-  es.onerror = () => setConn(false);
-  es.onmessage = (evt) => {
-    const payload = JSON.parse(evt.data);
-    render(payload);
-    addEvent(payload);
-  };
-}
+  render(payload);
+  addEvent(payload);
+});
 
-(async function init() {
-  await loadHistory();
-  connectStream();
-})();
+// ---------- placeholder until first message ----------
+els.tbody.innerHTML = '<tr class="empty-row"><td colspan="6">Waiting for data on ' + TOPIC_TELEMETRY + '…</td></tr>';
