@@ -8,7 +8,7 @@ const BROKER_URL  = "ws://10.87.61.232:9001";
 const MQTT_USER   = "sentinel";
 const MQTT_PASS   = "87654321";
 
-const TOPIC_TELEMETRY = `sentinel/${DEVICE_ID}/telemetry`;
+const TOPIC_TELEMETRY = `sentinel/${DEVICE_ID}/agent`;
 
 // ---------- DOM handles ----------
 const els = {
