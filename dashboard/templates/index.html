@@ -2,8 +2,12 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>SentinelAI Dashboard</title>
-<link rel="stylesheet" href="/static/style.css">
+<title>SentinelAI — Lab Safety Agent</title>
+
+<!-- MQTT.js from CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/5.3.4/mqtt.min.js"></script>
+
+<link rel="stylesheet" href="static/style.css">
 </head>
 <body>
 
@@ -48,6 +52,24 @@
   </div>
 </section>
 
+<!-- ── SENSOR READOUTS ─────────────────────────────── -->
+<section id="sensors" class="card">
+  <div class="live-header">
+    <div class="hazard" style="font-size:1rem; color:#94a3b8; letter-spacing:.05em;">
+      RAW SENSOR READINGS
+    </div>
+  </div>
+  <div class="readout">
+    <div><span class="label">Temperature</span><span class="value" id="s-temp">—</span></div>
+    <div><span class="label">Humidity</span><span class="value" id="s-hum">—</span></div>
+    <div><span class="label">MQ-2 (gas)</span><span class="value" id="s-mq2">—</span></div>
+    <div><span class="label">MQ-135 (air)</span><span class="value" id="s-mq135">—</span></div>
+    <div><span class="label">Flame</span><span class="value" id="s-flame">—</span></div>
+    <div><span class="label">Occupied</span><span class="value" id="s-pir">—</span></div>
+    <div><span class="label">Current</span><span class="value" id="s-current">—</span></div>
+  </div>
+</section>
+
 <!-- ── DEVICES / ACTUATORS ──────────────────────────── -->
 <section id="devices"></section>
 
@@ -63,6 +85,6 @@
   <tbody></tbody>
 </table>
 
-<script src="/static/script.js"></script>
+<script src="static/script.js"></script>
 </body>
 </html>
