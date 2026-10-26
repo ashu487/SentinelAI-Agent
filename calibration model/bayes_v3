@@ -33,7 +33,7 @@ FLAME_DETECT_DEFAULT   = 800    # reading with flame close to sensor
 
 EWMA_ALPHA = 0.30
 FORGET     = 0.97
-BASELINE_FILE = Path("baseline.json")
+BASELINE_FILE = Path(__file__).parent / "baseline.json"
 
 
 # ============================================================
