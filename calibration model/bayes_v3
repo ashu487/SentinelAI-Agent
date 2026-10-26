@@ -1,320 +1,564 @@
 """
-sentinel_bridge.py  (v3-minimal)
---------------------------------
-Wire-compatible with c1: same topics, same payload shape. The only
-change is internal — on first boot the bridge buffers 60 s of telemetry
-and uses it to calibrate SentinelAI (baseline.json) before publishing
-any verdicts. After calibration, step() runs exactly as in v1/v2.
+bayes.py — SentinelAI reasoning service (v3: dynamic weights + calibration)
 
-Topics (unchanged from c1):
-  IN       sentinel/sentinel/telemetry   (from ESP32)
-  OUT      sentinel/sentinel/agent       (to dashboard)
-  COMMAND  sentinel/sentinel/cmd         (manual overrides)
+Public API (unchanged from v1):
+    agent = SentinelAI(read_fn)          # read_fn optional; needed on first boot
+    result = agent.step(mq2, mq135, temp, hum, flame, pir, current)
+    # or with calibration already on disk:
+    agent = SentinelAI()
+
+Environment portability:
+    On first boot, a 60-second quiet-baseline capture sets per-sensor
+    normalization bounds (p5/p95 of quiet samples, widened by a hazard
+    margin), persisted to baseline.json. Subsequent boots load that file.
+    Pass force_recalibrate=True to redo it.
 """
 
-import sys
-import os
 import json
+import math
 import time
+from collections import deque
+from pathlib import Path
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# ============================================================
+# 0. CONSTANTS
+# ============================================================
 
-import paho.mqtt.client as mqtt
-from reasoning.bayes import SentinelAI, Calibrator, BASELINE_FILE
+HYPOTHESES = ["SAFE", "GAS_LEAK", "OVERHEAT", "FIRE"]
 
-# ------------------------------------------------------------------
-# MQTT CONFIG  (unchanged)
-# ------------------------------------------------------------------
-BROKER_HOST = "10.87.61.232"
-BROKER_PORT = 1883
-MQTT_USER   = "sentinel"
-MQTT_PASS   = "87654321"
+BASE_PRIOR = {"SAFE": 0.70, "GAS_LEAK": 0.10, "OVERHEAT": 0.10, "FIRE": 0.10}
 
-DEVICE_ID       = "sentinel"
-TOPIC_INPUT     = f"sentinel/{DEVICE_ID}/telemetry"
-TOPIC_OUTPUT    = f"sentinel/{DEVICE_ID}/agent"
-TOPIC_COMMAND   = f"sentinel/{DEVICE_ID}/cmd"
+FLAME_BASELINE_DEFAULT = 4095   # clear-room analog reading (active-low)
+FLAME_DETECT_DEFAULT   = 800    # reading with flame close to sensor
 
-# ------------------------------------------------------------------
-# CALIBRATION WINDOW  (60 s @ 2 Hz — same as Calibrator default)
-# ------------------------------------------------------------------
-CAL_DURATION_S = 60
-CAL_HZ         = 2
-CAL_TARGET     = CAL_DURATION_S * CAL_HZ
-
-# ------------------------------------------------------------------
-# INTERNAL STATE
-# ------------------------------------------------------------------
-agent    = None                    # None until calibration completes
-_state   = "CALIBRATING"           # "CALIBRATING" | "RUNNING"
-_cal_buf = []                      # raw samples collected during calibration
-_cal     = None                    # Calibrator instance during collection
-_last_cal_progress_print = 0.0
-
-manual = {"buzzer": None, "exhaust": None, "load_power": None}
-
-# ------------------------------------------------------------------
-# MQTT CLIENT
-# ------------------------------------------------------------------
-client = mqtt.Client(client_id="sentinel-bridge")
-client.username_pw_set(MQTT_USER, MQTT_PASS)
+EWMA_ALPHA = 0.30
+FORGET     = 0.97
+BASELINE_FILE = Path("baseline.json")
 
 
-def on_connect(c, userdata, flags, rc):
-    if rc == 0:
-        print(f"[bridge] connected to {BROKER_HOST}:{BROKER_PORT}")
-        c.subscribe(TOPIC_INPUT)
-        c.subscribe(TOPIC_COMMAND)
-        print(f"[bridge] listening on {TOPIC_INPUT} and {TOPIC_COMMAND}")
-        print(f"[bridge] publishing to {TOPIC_OUTPUT}")
-    else:
-        print(f"[bridge] connect failed rc={rc}")
+# ============================================================
+# 1. NORMALIZATION
+# ============================================================
+
+def norm(value, lo, hi):
+    """Clamp and scale a raw reading into 0..1. Handles lo > hi."""
+    if hi == lo:
+        return 0.0
+    return max(0.0, min(1.0, (value - lo) / (hi - lo)))
 
 
-# ------------------------------------------------------------------
-# FIELD TRANSLATION  (identical to c1)
-# ------------------------------------------------------------------
-def _f(v, d=0.0):
-    try:
-        return float(v)
-    except (TypeError, ValueError):
-        return d
+# ============================================================
+# 2. LIKELIHOOD CURVES (continuous, per-hypothesis)
+# ============================================================
+
+def _sigmoid(mid, steepness, floor):
+    """p(x) rises from `floor` toward 1 as x passes `mid`."""
+    def f(x):
+        return floor + (1.0 - floor) / (1.0 + math.exp(-steepness * (x - mid)))
+    return f
 
 
-def _i(v, d=0):
-    try:
-        return int(float(v))
-    except (TypeError, ValueError):
-        return d
+LIKELIHOODS = {
+    "gas": {
+        "SAFE":     _sigmoid(0.55, -9.0, 0.03),
+        "GAS_LEAK": _sigmoid(0.35,  9.0, 0.05),
+        "OVERHEAT": _sigmoid(0.60,  4.0, 0.10),
+        "FIRE":     _sigmoid(0.45,  6.0, 0.15),
+    },
+    "air": {
+        "SAFE":     _sigmoid(0.55, -8.0, 0.05),
+        "GAS_LEAK": _sigmoid(0.40,  7.0, 0.08),
+        "OVERHEAT": _sigmoid(0.65,  3.5, 0.20),
+        "FIRE":     _sigmoid(0.55,  5.0, 0.20),
+    },
+    "temp": {
+        "SAFE":     _sigmoid(0.55, -7.0, 0.03),
+        "GAS_LEAK": _sigmoid(0.70,  3.0, 0.10),
+        "OVERHEAT": _sigmoid(0.45,  6.0, 0.08),
+        "FIRE":     _sigmoid(0.50,  6.0, 0.10),
+    },
+    "current": {
+        "SAFE":     _sigmoid(0.60, -6.0, 0.05),
+        "GAS_LEAK": _sigmoid(0.80,  2.0, 0.08),
+        "OVERHEAT": _sigmoid(0.40,  6.0, 0.10),
+        "FIRE":     _sigmoid(0.65,  3.0, 0.15),
+    },
+    "flame": {
+        "SAFE":     _sigmoid(0.30, -14.0, 0.01),
+        "GAS_LEAK": _sigmoid(0.70,   2.0, 0.02),
+        "OVERHEAT": _sigmoid(0.75,   1.5, 0.05),
+        "FIRE":     _sigmoid(0.30,  12.0, 0.02),
+    },
+}
 
 
-FLAME_LOW  = 1200
-FLAME_HIGH = 2500
-_last_flame_state = 1
+# ============================================================
+# 3. CALIBRATION — one-minute quiet baseline
+# ============================================================
 
+class Calibrator:
+    """
+    60-second quiet-baseline capture. Produces per-channel (lo, hi)
+    normalization bounds from empirical p5/p95, widened by a hazard
+    margin so normal fluctuations never normalize to 1.0.
 
-def analog_flame_to_digital(raw):
-    global _last_flame_state
-    try:
-        v = float(raw)
-    except (TypeError, ValueError):
-        return _last_flame_state
-    if v <= FLAME_LOW:
-        _last_flame_state = 0
-    elif v >= FLAME_HIGH:
-        _last_flame_state = 1
-    return _last_flame_state
+    A coarse raw-threshold gate rejects obviously non-quiet samples
+    (hot plate on, solvent sprayed, fan on) so the baseline reflects
+    the room, not an activity.
+    """
 
-
-def translate(data: dict) -> dict:
-    raw_flame = data.get("flame", 1)
-    flame = analog_flame_to_digital(raw_flame)
-    return {
-        "mq2":     _f(data.get("mq2", 0)),
-        "mq135":   _f(data.get("mq135", 0)),
-        "temp":    _f(data.get("temperature", data.get("temp", 25))),
-        "hum":     _f(data.get("humidity",    data.get("hum", 50))),
-        "flame":   flame,
-        "pir":     _i(data.get("motion",      data.get("pir", 0))),
-        "current": _f(data.get("current", 0)),
+    RAW_QUIET = {
+        "mq2":     (60,   400),
+        "mq135":   (400,  900),
+        "temp":    (15,   32),
+        "hum":     (20,   80),
+        "flame":   (3500, 4095),
+        "current": (0.30, 0.90),
     }
 
+    MARGIN = {"mq2": 3.0, "mq135": 2.0, "temp": 2.5, "current": 3.0}
 
-# ------------------------------------------------------------------
-# CALIBRATION HELPERS
-# ------------------------------------------------------------------
-def _cal_raw_from(data: dict, reading: dict) -> dict:
-    """
-    Calibrator expects raw keys including raw-analog flame (3500-4095 in
-    a clear room). translate() already collapsed flame to 0/1, so pull
-    the original ADC value from `data` here.
-    """
-    return {
-        "mq2":     reading["mq2"],
-        "mq135":   reading["mq135"],
-        "temp":    reading["temp"],
-        "hum":     reading["hum"],
-        "flame":   _f(data.get("flame", 4095)),
-        "pir":     reading["pir"],
-        "current": reading["current"],
-    }
+    def __init__(self, duration_s=60, hz=2, path=BASELINE_FILE):
+        self.duration_s = duration_s
+        self.hz = hz
+        self.path = Path(path)
+        self.samples = []
+        self.rejected = 0
 
+    def _is_quiet(self, raw):
+        for k, (lo, hi) in self.RAW_QUIET.items():
+            if not (lo <= raw[k] <= hi):
+                return False
+        return True
 
-def _finish_calibration():
-    """
-    Called once CAL_TARGET samples have been buffered. Runs the quiet-gate
-    + p5/p95 fit, writes baseline.json, and constructs SentinelAI().
-    """
-    global agent, _state, _cal_buf, _cal
-
-    try:
-        bounds = _cal.compute_bounds()
-    except RuntimeError as e:
-        print(f"[bridge] calibration failed ({e}) — will retry on next telemetry")
-        # Keep CALIBRATING; clear buffer so we collect a fresh window.
-        _cal_buf.clear()
-        _cal.samples.clear()
-        _cal.rejected = 0
-        return
-
-    _cal.save(bounds)
-    agent = SentinelAI(force_recalibrate=False)   # loads the file we just wrote
-    _state = "RUNNING"
-    print(f"[bridge] calibration complete — "
-          f"kept={len(_cal.samples)} rejected={_cal.rejected}")
-    _cal_buf = []
-    _cal = None
-
-
-# ------------------------------------------------------------------
-# MESSAGE HANDLER
-# ------------------------------------------------------------------
-def on_message(c, userdata, msg):
-    global _state, _cal_buf, _cal, _last_cal_progress_print
-
-    # ---- manual override (unchanged) ----
-    if msg.topic == TOPIC_COMMAND:
-        try:
-            data = json.loads(msg.payload.decode())
-        except Exception as e:
-            print(f"[bridge] bad cmd JSON: {e}")
-            return
-        for k in manual:
-            if k in data:
-                manual[k] = bool(data[k])
-        print(f"[bridge] manual override: {manual}")
-        return
-
-    # ---- telemetry ----
-    if msg.topic == TOPIC_INPUT:
-        try:
-            data = json.loads(msg.payload.decode())
-        except Exception as e:
-            print(f"[bridge] bad sensor JSON: {e}")
-            return
-
-        if "temperature" not in data and "temp" not in data:
-            return
-
-        reading = translate(data)
-
-        # ---- CALIBRATING: buffer only, publish nothing ----
-        if _state == "CALIBRATING":
-            if _cal is None:
-                _cal = Calibrator(path=BASELINE_FILE)
-            raw = _cal_raw_from(data, reading)
-            if _cal._is_quiet(raw):
-                _cal.samples.append(raw)
+    def collect(self, read_fn, progress_fn=None):
+        n = int(self.duration_s * self.hz)
+        self.samples, self.rejected = [], 0
+        for i in range(n):
+            raw = read_fn()
+            if self._is_quiet(raw):
+                self.samples.append(raw)
             else:
-                _cal.rejected += 1
-            _cal_buf.append(raw)
+                self.rejected += 1
+            if progress_fn:
+                progress_fn(i / n, len(self.samples), self.rejected)
+            time.sleep(1.0 / self.hz)
+        return self.samples
 
-            # Progress print ~once per second (not on every message)
-            now = time.time()
-            if now - _last_cal_progress_print > 1.0:
-                _last_cal_progress_print = now
-                pct = len(_cal_buf) / CAL_TARGET * 100
-                print(f"\r[bridge] calibrating… {pct:5.1f}%  "
-                      f"kept={len(_cal.samples):3d}  rejected={_cal.rejected:2d}",
-                      end="")
+    def compute_bounds(self):
+        if len(self.samples) < 10:
+            raise RuntimeError(
+                f"Only {len(self.samples)} quiet samples — baseline unreliable. "
+                f"Ensure the room is quiet and retry."
+            )
+        cols = {k: sorted(s[k] for s in self.samples)
+                for k in ("mq2", "mq135", "temp", "current")}
+        bounds = {}
+        for k, v in cols.items():
+            p5  = v[max(0, int(0.05 * len(v)) - 1)]
+            p95 = v[min(len(v) - 1, int(0.95 * len(v)))]
+            span = max(p95 - p5, 1e-6)
+            m = self.MARGIN[k]
+            bounds[k] = (p5 - (m - 1) * span / 2,
+                         p95 + (m - 1) * span / 2)
+        # Flame is special: clear-room is the baseline by construction.
+        bounds["flame"] = (FLAME_BASELINE_DEFAULT, FLAME_DETECT_DEFAULT)
+        return bounds
 
-            if len(_cal_buf) >= CAL_TARGET:
-                print()  # newline after progress line
-                _finish_calibration()
-            return
+    def save(self, bounds):
+        self.path.write_text(json.dumps({
+            "captured_at":  time.time(),
+            "n_samples":    len(self.samples),
+            "n_rejected":   self.rejected,
+            "duration_s":   self.duration_s,
+            "bounds":       {k: list(v) for k, v in bounds.items()},
+        }, indent=2))
+        return bounds
 
-        # ---- RUNNING: identical to c1 ----
-        try:
-            result = agent.step(**{k: reading[k] for k in
-                                   ("mq2", "mq135", "temp", "hum",
-                                    "flame", "pir", "current")})
-        except Exception as e:
-            print(f"[bridge] agent.step failed: {e}  reading={reading}")
-            return
+    def load(self):
+        if not self.path.exists():
+            return None
+        data = json.loads(self.path.read_text())
+        return {k: tuple(v) for k, v in data["bounds"].items()}
 
-        publish(reading, result, raw=data)
-        return
-
-
-client.on_connect = on_connect
-client.on_message = on_message
-
-
-def start_mqtt():
-    client.connect(BROKER_HOST, BROKER_PORT, keepalive=30)
-    client.loop_start()
-
-
-# ------------------------------------------------------------------
-# PUBLISHER  (byte-identical to c1)
-# ------------------------------------------------------------------
-def publish(reading, result, raw=None):
-    level  = result["level"]
-    hazard = result["hazard"]
-    acts   = result["actions"]
-
-    exhaust = acts.get("exhaust_fan", False)
-    buzzer  = acts.get("buzzer", False)
-    load_pw = acts.get("relay_power", True)
-
-    if manual["buzzer"] is not None and level != "RED":
-        buzzer = manual["buzzer"]
-    if manual["exhaust"] is not None and not (level == "RED" and hazard == "FIRE"):
-        exhaust = manual["exhaust"]
-    if manual["load_power"] is not None and hazard != "OVERHEAT":
-        load_pw = manual["load_power"]
-
-    payload = {
-        "timestamp":   int(time.time() * 1000),
-        "device_id":   DEVICE_ID,
-
-        "level":       level,
-        "hazard":      hazard,
-        "confidence":  result["confidence"],
-        "risk_score":  result["risk_score"],
-        "beliefs":     result["beliefs"],
-        "rules_fired": result["rules_fired"],
-
-        "actions": {
-            "exhaust_fan": bool(exhaust),
-            "buzzer":      bool(buzzer),
-            "relay_power": bool(load_pw),
-            "red_led":     bool(acts.get("red_led",    False)),
-            "yellow_led":  bool(acts.get("yellow_led", False)),
-            "green_led":   bool(acts.get("green_led",  False)),
-        },
-
-        "reading": reading,
-        "esp32_raw": raw or {},
-    }
-
-    client.publish(TOPIC_OUTPUT, json.dumps(payload), qos=1)
-    print(f"[bridge] → {level:6} {hazard:9} risk={result['risk_score']:5}  "
-          f"fan={payload['actions']['exhaust_fan']} "
-          f"buzzer={payload['actions']['buzzer']}")
+    def run(self, read_fn, progress_fn=None):
+        self.collect(read_fn, progress_fn)
+        return self.save(self.compute_bounds())
 
 
-# ------------------------------------------------------------------
-if __name__ == "__main__":
-    start_mqtt()
+# ============================================================
+# 4. FEATURE EXTRACTION (continuous + EWMA + slope)
+# ============================================================
 
-    if BASELINE_FILE.exists():
-        try:
-            agent = SentinelAI(force_recalibrate=False)
-            _state = "RUNNING"
-            print(f"[bridge] loaded {BASELINE_FILE} — running")
-        except Exception as e:
-            print(f"[bridge] failed to load baseline ({e}) — will recalibrate")
-            _state = "CALIBRATING"
-    else:
-        print(f"[bridge] no {BASELINE_FILE} — calibrating from first "
-              f"{CAL_DURATION_S} s of telemetry (keep the room quiet)")
-        _state = "CALIBRATING"
+class FeatureExtractor:
+    def __init__(self, bounds):
+        self.b = bounds
+        self.smoothed = {}
+        self.prev = {}
+        self.slope = {}
+
+    def _smooth(self, key, raw):
+        if key not in self.smoothed:
+            self.smoothed[key] = raw
+        else:
+            self.smoothed[key] = EWMA_ALPHA * raw + (1 - EWMA_ALPHA) * self.smoothed[key]
+        prev = self.prev.get(key, self.smoothed[key])
+        self.slope[key] = self.smoothed[key] - prev
+        self.prev[key] = self.smoothed[key]
+        return self.smoothed[key]
+
+    def extract(self, mq2, mq135, temp, hum, flame, pir, current):
+        raw = {
+            "gas":     norm(mq2,     *self.b["mq2"]),
+            "air":     norm(mq135,   *self.b["mq135"]),
+            "temp":    norm(temp,    *self.b["temp"]),
+            "current": norm(current, *self.b["current"]),
+            "flame":   norm(flame,   *self.b["flame"]),
+        }
+        f = {k: self._smooth(k, v) for k, v in raw.items()}
+        f["gas_slope"]  = self.slope["gas"]
+        f["temp_slope"] = self.slope["temp"]
+        f["human"]      = (pir == 1)
+        f["humidity"]   = hum
+        return f
+
+
+# ============================================================
+# 5. SENSOR HEALTH (dynamic per-sensor reliability weights)
+# ============================================================
+
+class SensorHealth:
+    WINDOW = 20
+    STUCK_RAIL = 0.02
+
+    def __init__(self):
+        self.hist = {k: deque(maxlen=self.WINDOW) for k in
+                     ("gas", "air", "temp", "current", "flame")}
+        self.weight = {k: 1.0 for k in self.hist}
+
+    def update(self, f):
+        for k in self.hist:
+            self.hist[k].append(f[k])
+            w = 1.0
+            vals = self.hist[k]
+            if len(vals) >= self.WINDOW:
+                if all(v <= self.STUCK_RAIL or v >= 1 - self.STUCK_RAIL for v in vals):
+                    w *= 0.25
+                mean = sum(vals) / len(vals)
+                var = sum((v - mean) ** 2 for v in vals) / len(vals)
+                if var < 1e-5 and k != "flame":
+                    w *= 0.5
+            self.weight[k] = 0.85 * self.weight[k] + 0.15 * w
+        return self.weight
+
+
+# ============================================================
+# 6. WEIGHTED BAYES UPDATE
+# ============================================================
+
+def weighted_bayes_update(f, prior, weights):
+    log_post = {h: math.log(max(prior[h], 1e-12)) for h in HYPOTHESES}
+    for sensor, table in LIKELIHOODS.items():
+        x = f[sensor]
+        w = weights.get(sensor, 1.0)
+        for h in HYPOTHESES:
+            log_post[h] += w * math.log(max(table[h](x), 1e-6))
+    m = max(log_post.values())
+    exps = {h: math.exp(v - m) for h, v in log_post.items()}
+    Z = sum(exps.values())
+    return {h: exps[h] / Z for h in HYPOTHESES}
+
+
+# ============================================================
+# 7. CONTEXT-GATED, STRENGTH-SCALED RULES
+# ============================================================
+
+def rule_evidence(f, weights):
+    ev = {h: 1.0 for h in HYPOTHESES}
+    fired = []
+
+    def boost(h, amount, name):
+        if amount > 0.01:
+            ev[h] *= (1.0 + amount)
+            fired.append(f"{name}({amount:.2f})")
+
+    r1 = max(0.0, f["gas"] - 0.20) / 0.80 * weights["gas"]
+    boost("GAS_LEAK", 3.0 * r1, "R1:gas")
+
+    r2 = min(f["air"], f["gas"]) * weights["air"] * weights["gas"]
+    boost("GAS_LEAK", 2.0 * r2, "R2:air+gas")
+
+    ctx = 1.0 if (f["current"] > 0.35 or f["human"]) else 0.35
+    r3 = max(0.0, f["temp"] - 0.35) / 0.65 * weights["temp"] * ctx
+    boost("OVERHEAT", 3.0 * r3, "R3:temp")
+
+    r4 = min(f["current"], f["temp"]) * weights["current"] * weights["temp"]
+    boost("OVERHEAT", 2.0 * r4, "R4:I+T")
+
+    r5 = f["flame"] * max(0.0, f["temp"] - 0.30) / 0.70 * weights["flame"]
+    boost("FIRE", 4.0 * r5, "R5:flame+heat")
+
+    r6 = min(f["gas"], f["flame"]) * weights["gas"] * weights["flame"]
+    boost("FIRE", 5.0 * r6, "R6:ignition")
+
+    if f["human"] and (f["gas"] > 0.30 or f["flame"] > 0.5):
+        fired.append("R7:human_at_risk")
+
+    if f["gas_slope"] > 0.06:
+        boost("GAS_LEAK", 1.5 * weights["gas"], "T1:gas_ramp")
+    if f["temp_slope"] > 0.05:
+        boost("OVERHEAT", 1.2 * weights["temp"], "T2:heat_ramp")
+
+    return ev, fired
+
+
+# ============================================================
+# 8. TEMPORAL FILTER
+# ============================================================
+
+def blend_prior(prev):
+    return {h: FORGET * prev[h] + (1 - FORGET) * BASE_PRIOR[h] for h in HYPOTHESES}
+
+
+# ============================================================
+# 9. RISK + HYSTERESIS
+# ============================================================
+
+RISK_WEIGHTS = {"FIRE": 0.45, "GAS_LEAK": 0.30, "OVERHEAT": 0.20}
+
+
+def compute_risk(beliefs, f):
+    base = sum(RISK_WEIGHTS[h] * beliefs[h] for h in RISK_WEIGHTS)
+    base += 0.05 * (1 - beliefs["SAFE"])
+    dom = max(RISK_WEIGHTS, key=lambda h: beliefs[h])
+    severity = {"FIRE":     f["flame"],
+                "GAS_LEAK": f["gas"],
+                "OVERHEAT": max(f["temp"], f["current"])}[dom]
+    score = 100 * base * (0.6 + 0.4 * severity)
+    if f["human"] and dom != "SAFE":
+        score *= 1.25
+    return max(0.0, min(100.0, score))
+
+
+class Hysteresis:
+    THRESH = {"GREEN": 0.0, "YELLOW": 25.0, "RED": 50.0}
+    EXIT   = {"YELLOW": 18.0, "RED": 42.0}
+    ORDER  = ["GREEN", "YELLOW", "RED"]
+
+    def __init__(self):
+        self.level = "GREEN"
+
+    def update(self, score):
+        i = self.ORDER.index(self.level)
+        while i < 2 and score >= self.THRESH[self.ORDER[i + 1]]:
+            i += 1
+        while i > 0 and score < self.EXIT[self.ORDER[i]]:
+            i -= 1
+        self.level = self.ORDER[i]
+        return self.level
+
+
+# ============================================================
+# 10. ACTIONS (hazard-specific, unchanged semantics)
+# ============================================================
+
+def decide_actions(hazard, level, f):
+    plan = {"exhaust_fan": False, "buzzer": False, "relay_power": True,
+            "red_led": False, "yellow_led": False, "green_led": False}
+
+    if level == "GREEN":
+        plan["green_led"] = True
+        return plan
+
+    if level == "YELLOW":
+        plan["yellow_led"] = True
+        if hazard in ("GAS_LEAK", "OVERHEAT"):
+            plan["exhaust_fan"] = True
+        if hazard == "OVERHEAT":
+            plan["relay_power"] = False
+        if hazard == "FIRE":
+            plan["exhaust_fan"] = False
+            plan["relay_power"] = False
+        return plan
+
+    plan["red_led"] = True
+    plan["buzzer"] = True
+    if hazard == "GAS_LEAK":
+        plan["exhaust_fan"] = True;   plan["relay_power"] = False
+    elif hazard == "OVERHEAT":
+        plan["exhaust_fan"] = True;   plan["relay_power"] = False
+    elif hazard == "FIRE":
+        plan["exhaust_fan"] = False;  plan["relay_power"] = False
+    return plan
+
+
+# ============================================================
+# 11. AGENT
+# ============================================================
+
+class SentinelAI:
+    def __init__(self, read_fn=None, force_recalibrate=False,
+                 baseline_path=BASELINE_FILE):
+        cal = Calibrator(path=baseline_path)
+        bounds = None if force_recalibrate else cal.load()
+
+        if bounds is None:
+            if read_fn is None:
+                raise RuntimeError(
+                    "No baseline file and no read_fn supplied. "
+                    "Pass read_fn=<callable returning one raw sample dict> "
+                    "to run the 60-second calibration, or place baseline.json "
+                    "next to this script."
+                )
+            print("[SentinelAI] No baseline found — calibrating for 60 s. "
+                  "Keep the room quiet.")
+            def _progress(frac, kept, rej):
+                print(f"\r  calibrating… {frac*100:5.1f}%  kept={kept:3d}  "
+                      f"rejected={rej:2d}", end="")
+            bounds = cal.run(read_fn, progress_fn=_progress)
+            print("\n[SentinelAI] Baseline saved to", cal.path)
+
+        self.bounds = bounds
+        self.features = FeatureExtractor(bounds)
+        self.health = SensorHealth()
+        self.hyst = Hysteresis()
+        self.beliefs = dict(BASE_PRIOR)
+        self.history = []
+
+    def recalibrate(self, read_fn):
+        cal = Calibrator(path=BASELINE_FILE)
+        def _progress(frac, kept, rej):
+            print(f"\r  recalibrating… {frac*100:5.1f}%  kept={kept:3d}  "
+                  f"rejected={rej:2d}", end="")
+        bounds = cal.run(read_fn, progress_fn=_progress)
+        print()
+        self.bounds = bounds
+        self.features = FeatureExtractor(bounds)
+        self.health = SensorHealth()
+        self.hyst = Hysteresis()
+        self.beliefs = dict(BASE_PRIOR)
+        return bounds
+
+    def step(self, mq2, mq135, temp, hum, flame, pir, current):
+        f = self.features.extract(mq2, mq135, temp, hum, flame, pir, current)
+        weights = self.health.update(f)
+
+        prior = blend_prior(self.beliefs)
+        post = weighted_bayes_update(f, prior, weights)
+
+        ev, fired = rule_evidence(f, weights)
+        for h in HYPOTHESES:
+            post[h] *= ev[h]
+        Z = sum(post.values()) or 1.0
+        self.beliefs = {h: post[h] / Z for h in HYPOTHESES}
+
+        hazard = max(self.beliefs, key=self.beliefs.get)
+        confidence = self.beliefs[hazard]
+
+        score = compute_risk(self.beliefs, f)
+        level = self.hyst.update(score)
+        actions = decide_actions(hazard, level, f)
+
+        out = {
+            "level":          level,
+            "hazard":         hazard,
+            "confidence":     round(confidence, 3),
+            "risk_score":     round(score, 1),
+            "beliefs":        {k: round(v, 3) for k, v in self.beliefs.items()},
+            "rules_fired":    fired,
+            "sensor_weights": {k: round(v, 2) for k, v in weights.items()},
+            "actions":        actions,
+        }
+        self.history.append({**out, "features": f})
+        return out
+
+
+# ============================================================
+# 12. CLI: --demo (replays known scenarios) or interactive
+# ============================================================
+
+def _fabricate_read_fn(base_temp=26.0):
+    """Fake reader for --demo — quiet lab at the given base_temp."""
+    return lambda: {"mq2": 95, "mq135": 528, "temp": base_temp, "hum": 55,
+                    "flame": 4095, "pir": 1, "current": 0.66}
+
+
+def run_demo():
+    print("\n" + "#" * 60)
+    print("# DEMO — cold room (26 °C) baseline, then a 35 °C room baseline")
+    print("#" * 60)
+
+    for base_temp in (26.0, 35.0):
+        print(f"\n>>> Calibrating with room at {base_temp} °C …")
+        agent = SentinelAI(read_fn=_fabricate_read_fn(base_temp),
+                           force_recalibrate=True)
+
+        def show(tag, vals):
+            res = agent.step(*vals)
+            print(f"  {tag:<28} level={res['level']:<6} "
+                  f"hazard={res['hazard']:<9} risk={res['risk_score']:5.1f}  "
+                  f"beliefs={res['beliefs']}")
+
+        # Same room, quiet
+        show("quiet room",
+             (95, 528, base_temp,      55, 4095, 1, 0.66))
+        # 3 °C above this room's baseline — should still be SAFE-ish
+        show(f"+3 °C (to {base_temp+3:.0f})",
+             (95, 528, base_temp + 3,  55, 4095, 1, 0.66))
+        # Real gas spike
+        show("gas spike (MQ-2 982)",
+             (982, 3139, base_temp + 1, 55, 4095, 1, 0.66))
+        # Overheating load
+        show("overheat (I=1.8, T+15)",
+             (300, 700,  base_temp + 15, 40, 4095, 1, 1.8))
+        # Fire
+        show("fire (flame + heat)",
+             (900, 2200, base_temp + 25, 30,  800, 0, 1.2))
+
+
+def run_interactive():
+    # Ask for a read function on first boot so calibration can happen.
+    def read_fn():
+        raw = input("  calibration sample (mq2 mq135 temp hum flame pir current): ").strip()
+        while True:
+            try:
+                v = raw.split()
+                assert len(v) == 7
+                return {"mq2": float(v[0]), "mq135": float(v[1]),
+                        "temp": float(v[2]), "hum": float(v[3]),
+                        "flame": float(v[4]), "pir": int(float(v[5])),
+                        "current": float(v[6])}
+            except Exception:
+                raw = input("  invalid, try again: ").strip()
 
     try:
-        while True:
-            time.sleep(1)
-    except KeyboardInterrupt:
-        print("\n[bridge] stopping")
-        client.loop_stop()
-        client.disconnect()
+        agent = SentinelAI(read_fn=read_fn)
+    except RuntimeError as e:
+        print(e); return
+
+    print("\nSentinelAI — interactive. Enter 7 values, or 'q'.")
+    print("Format: mq2 mq135 temp hum flame pir current")
+    while True:
+        raw = input("sensors> ").strip()
+        if raw.lower() in ("q", "quit", "exit"):
+            break
+        try:
+            v = raw.split()
+            if len(v) != 7:
+                print("need 7 values"); continue
+            mq2, mq135, temp, hum, flame, pir, current = map(float, v)
+            res = agent.step(mq2, mq135, temp, hum, int(flame), int(pir), current)
+            print(json.dumps(res, indent=2))
+        except ValueError:
+            print("invalid input")
+
+
+if __name__ == "__main__":
+    import sys
+    if len(sys.argv) > 1 and sys.argv[1] == "--demo":
+        run_demo()
+    elif len(sys.argv) > 1 and sys.argv[1] == "--reset":
+        BASELINE_FILE.unlink(missing_ok=True)
+        print(f"Removed {BASELINE_FILE}. Next run will recalibrate.")
+    else:
+        run_interactive()
