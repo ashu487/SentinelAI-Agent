@@ -1,33 +1,21 @@
 """
-sentinel_bridge.py  (v3)
-------------------------
-Reads raw sensor + status JSON from the ESP32, runs it through the
-SentinelAI reasoning agent (bayes.py v3 — dynamic weights + 60 s
-calibration), and publishes the verdict to a separate topic for the
-dashboard.
+sentinel_bridge.py  (v3-minimal)
+--------------------------------
+Wire-compatible with c1: same topics, same payload shape. The only
+change is internal — on first boot the bridge buffers 60 s of telemetry
+and uses it to calibrate SentinelAI (baseline.json) before publishing
+any verdicts. After calibration, step() runs exactly as in v1/v2.
 
-New in v3 vs c1:
-  * If baseline.json is missing on startup, the bridge enters a
-    CALIBRATING state, buffers 60 s of live telemetry, and runs the
-    calibration itself before publishing any verdicts.
-  * Dashboard can trigger a recalibration at any time via the
-    `cmd/recalibrate` topic.
-  * Calibration progress is published to `calibrate_status` so the
-    dashboard can show a progress bar and the final bounds.
-
-Topics:
-  IN       sentinel/sentinel/telemetry          (from ESP32)
-  OUT      sentinel/sentinel/agent              (to dashboard)
-  COMMAND  sentinel/sentinel/cmd                (manual overrides)
-  RECAL    sentinel/sentinel/cmd/recalibrate    (trigger 60 s capture)
-  CALSTAT  sentinel/sentinel/calibrate_status   (progress + result)
+Topics (unchanged from c1):
+  IN       sentinel/sentinel/telemetry   (from ESP32)
+  OUT      sentinel/sentinel/agent       (to dashboard)
+  COMMAND  sentinel/sentinel/cmd         (manual overrides)
 """
 
 import sys
 import os
 import json
 import time
-import threading
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -35,7 +23,7 @@ import paho.mqtt.client as mqtt
 from reasoning.bayes import SentinelAI, Calibrator, BASELINE_FILE
 
 # ------------------------------------------------------------------
-# MQTT CONFIG
+# MQTT CONFIG  (unchanged)
 # ------------------------------------------------------------------
 BROKER_HOST = "10.87.61.232"
 BROKER_PORT = 1883
@@ -43,22 +31,25 @@ MQTT_USER   = "sentinel"
 MQTT_PASS   = "87654321"
 
 DEVICE_ID       = "sentinel"
-TOPIC_INPUT     = f"sentinel/{DEVICE_ID}/telemetry"          # ESP32 -> bridge
-TOPIC_OUTPUT    = f"sentinel/{DEVICE_ID}/agent"              # bridge -> dashboard
-TOPIC_COMMAND   = f"sentinel/{DEVICE_ID}/cmd"                # dashboard -> bridge
-TOPIC_RECAL     = f"sentinel/{DEVICE_ID}/cmd/recalibrate"    # trigger calibration
-TOPIC_CALSTAT   = f"sentinel/{DEVICE_ID}/calibrate_status"   # progress + result
+TOPIC_INPUT     = f"sentinel/{DEVICE_ID}/telemetry"
+TOPIC_OUTPUT    = f"sentinel/{DEVICE_ID}/agent"
+TOPIC_COMMAND   = f"sentinel/{DEVICE_ID}/cmd"
 
 # ------------------------------------------------------------------
-# AGENT — created after calibration
+# CALIBRATION WINDOW  (60 s @ 2 Hz — same as Calibrator default)
 # ------------------------------------------------------------------
-agent = None                      # populated once calibration is done
-_state_lock = threading.Lock()
-_state = "CALIBRATING"            # "CALIBRATING" | "RUNNING"
+CAL_DURATION_S = 60
+CAL_HZ         = 2
+CAL_TARGET     = CAL_DURATION_S * CAL_HZ
 
-# Buffer used to accumulate calibration samples while MQTT loop runs.
-_cal_buf = []                     # list of raw sample dicts (pre-normalisation)
-_cal_target = 60 * 2              # 60 s @ 2 Hz — matches Calibrator default
+# ------------------------------------------------------------------
+# INTERNAL STATE
+# ------------------------------------------------------------------
+agent    = None                    # None until calibration completes
+_state   = "CALIBRATING"           # "CALIBRATING" | "RUNNING"
+_cal_buf = []                      # raw samples collected during calibration
+_cal     = None                    # Calibrator instance during collection
+_last_cal_progress_print = 0.0
 
 manual = {"buzzer": None, "exhaust": None, "load_power": None}
 
@@ -74,16 +65,14 @@ def on_connect(c, userdata, flags, rc):
         print(f"[bridge] connected to {BROKER_HOST}:{BROKER_PORT}")
         c.subscribe(TOPIC_INPUT)
         c.subscribe(TOPIC_COMMAND)
-        c.subscribe(TOPIC_RECAL)
-        print(f"[bridge] listening on {TOPIC_INPUT}, {TOPIC_COMMAND}, {TOPIC_RECAL}")
+        print(f"[bridge] listening on {TOPIC_INPUT} and {TOPIC_COMMAND}")
         print(f"[bridge] publishing to {TOPIC_OUTPUT}")
-        _publish_calstat({"state": _state})
     else:
         print(f"[bridge] connect failed rc={rc}")
 
 
 # ------------------------------------------------------------------
-# FIELD TRANSLATION: ESP32 -> SentinelAI.step() args   (unchanged from c1)
+# FIELD TRANSLATION  (identical to c1)
 # ------------------------------------------------------------------
 def _f(v, d=0.0):
     try:
@@ -99,25 +88,17 @@ def _i(v, d=0):
         return d
 
 
-# FLAME ANALOG -> DIGITAL CONVERSION
-FLAME_LOW  = 1200   # below this = flame detected
-FLAME_HIGH = 2500   # above this = no flame
-_last_flame_state = 1   # 1 = no flame (safe default)
+FLAME_LOW  = 1200
+FLAME_HIGH = 2500
+_last_flame_state = 1
 
 
 def analog_flame_to_digital(raw):
-    """
-    Convert a raw analog flame reading into 0 (flame detected) or 1
-    (no flame). Uses hysteresis so noise near the threshold doesn't
-    cause flip-flopping.
-    """
     global _last_flame_state
-
     try:
         v = float(raw)
     except (TypeError, ValueError):
         return _last_flame_state
-
     if v <= FLAME_LOW:
         _last_flame_state = 0
     elif v >= FLAME_HIGH:
@@ -126,21 +107,8 @@ def analog_flame_to_digital(raw):
 
 
 def translate(data: dict) -> dict:
-    """
-    ESP32 flat payload -> SentinelAI.step() keyword args.
-
-    Field name mapping:
-      temperature -> temp
-      humidity    -> hum
-      motion      -> pir
-      flame       -> flame   (accepts 0/1 or raw ADC >1)
-
-    flame semantics: 0 = flame detected, 1 = no flame.
-    If raw ADC is received (>1), coerce by threshold.
-    """
     raw_flame = data.get("flame", 1)
     flame = analog_flame_to_digital(raw_flame)
-
     return {
         "mq2":     _f(data.get("mq2", 0)),
         "mq135":   _f(data.get("mq135", 0)),
@@ -152,122 +120,59 @@ def translate(data: dict) -> dict:
     }
 
 
-def to_cal_raw(reading: dict) -> dict:
+# ------------------------------------------------------------------
+# CALIBRATION HELPERS
+# ------------------------------------------------------------------
+def _cal_raw_from(data: dict, reading: dict) -> dict:
     """
-    Convert a translated reading back to the raw form Calibrator expects
-    (keys: mq2, mq135, temp, hum, flame, pir, current, with flame as raw
-    *analog* if available — falls back to the digital state).
-
-    Calibrator.RAW_QUIET for flame expects analog 3500-4095 in a clear
-    room, so we prefer the ESP32's raw analog flame when present.
+    Calibrator expects raw keys including raw-analog flame (3500-4095 in
+    a clear room). translate() already collapsed flame to 0/1, so pull
+    the original ADC value from `data` here.
     """
     return {
         "mq2":     reading["mq2"],
         "mq135":   reading["mq135"],
         "temp":    reading["temp"],
         "hum":     reading["hum"],
-        "flame":   reading.get("_raw_flame", 4095),   # injected by on_message
+        "flame":   _f(data.get("flame", 4095)),
         "pir":     reading["pir"],
         "current": reading["current"],
     }
 
 
-# ------------------------------------------------------------------
-# CALIBRATION GLUE
-# ------------------------------------------------------------------
-def _publish_calstat(obj: dict):
-    obj = {"timestamp": int(time.time() * 1000), **obj}
-    client.publish(TOPIC_CALSTAT, json.dumps(obj), qos=0)
-
-
-def _run_calibration(samples=None):
+def _finish_calibration():
     """
-    Build a Calibrator, feed it either a pre-collected buffer or block on
-    live telemetry, then construct SentinelAI() from the resulting file.
-
-    Called from on_message (first boot) or a background thread (recal).
+    Called once CAL_TARGET samples have been buffered. Runs the quiet-gate
+    + p5/p95 fit, writes baseline.json, and constructs SentinelAI().
     """
-    global agent, _state, _cal_buf
-
-    cal = Calibrator(path=BASELINE_FILE)
-    t_start = time.time()
-
-    if samples is None:
-        # First-boot path: _cal_buf is being filled by on_message; just wait.
-        _state = "CALIBRATING"
-        _publish_calstat({"state": _state, "progress": 0.0,
-                          "target": _cal_target})
-        while len(_cal_buf) < _cal_target:
-            time.sleep(0.2)
-            pct = len(_cal_buf) / _cal_target
-            _publish_calstat({
-                "state": _state,
-                "progress": round(pct, 3),
-                "kept": len(cal.samples),
-                "collected": len(_cal_buf),
-                "rejected": cal.rejected,
-            })
-        samples = _cal_buf
-
-    # Run the quiet-gate and p5/p95 fit over whatever we've collected.
-    cal.samples = []
-    cal.rejected = 0
-    for s in samples:
-        if cal._is_quiet(s):
-            cal.samples.append(s)
-        else:
-            cal.rejected += 1
+    global agent, _state, _cal_buf, _cal
 
     try:
-        bounds = cal.compute_bounds()
+        bounds = _cal.compute_bounds()
     except RuntimeError as e:
-        _publish_calstat({"state": "FAILED", "error": str(e),
-                          "kept": len(cal.samples),
-                          "rejected": cal.rejected})
-        print(f"[bridge] calibration failed: {e}")
-        # If we already had an agent from a previous calibration, keep using it.
-        if agent is not None:
-            _state = "RUNNING"
+        print(f"[bridge] calibration failed ({e}) — will retry on next telemetry")
+        # Keep CALIBRATING; clear buffer so we collect a fresh window.
+        _cal_buf.clear()
+        _cal.samples.clear()
+        _cal.rejected = 0
         return
 
-    cal.save(bounds)
-
-    # SentinelAI v3: pass force_recalibrate=False so it *loads* the file
-    # we just wrote rather than calibrating again.
-    with _state_lock:
-        agent = SentinelAI(force_recalibrate=False)
-        _state = "RUNNING"
-
-    elapsed = round(time.time() - t_start, 1)
-    print(f"[bridge] calibration complete in {elapsed}s — "
-          f"bounds={ {k: [round(v[0], 2), round(v[1], 2)] for k, v in bounds.items()} }")
-    _publish_calstat({
-        "state":     "READY",
-        "elapsed_s": elapsed,
-        "kept":      len(cal.samples),
-        "rejected":  cal.rejected,
-        "bounds":    {k: [round(v[0], 3), round(v[1], 3)]
-                      for k, v in bounds.items()},
-    })
-
-
-def _start_recalibration():
-    """
-    Background thread that collects a fresh 60 s of live telemetry from
-    the MQTT stream and re-runs calibration.
-    """
-    global _cal_buf
+    _cal.save(bounds)
+    agent = SentinelAI(force_recalibrate=False)   # loads the file we just wrote
+    _state = "RUNNING"
+    print(f"[bridge] calibration complete — "
+          f"kept={len(_cal.samples)} rejected={_cal.rejected}")
     _cal_buf = []
-    threading.Thread(target=_run_calibration, args=(None,), daemon=True).start()
+    _cal = None
 
 
 # ------------------------------------------------------------------
 # MESSAGE HANDLER
 # ------------------------------------------------------------------
 def on_message(c, userdata, msg):
-    global _cal_buf
+    global _state, _cal_buf, _cal, _last_cal_progress_print
 
-    # ---- manual override ----
+    # ---- manual override (unchanged) ----
     if msg.topic == TOPIC_COMMAND:
         try:
             data = json.loads(msg.payload.decode())
@@ -280,13 +185,7 @@ def on_message(c, userdata, msg):
         print(f"[bridge] manual override: {manual}")
         return
 
-    # ---- recalibrate trigger ----
-    if msg.topic == TOPIC_RECAL:
-        print("[bridge] recalibration requested by dashboard")
-        _start_recalibration()
-        return
-
-    # ---- raw telemetry from ESP32 ----
+    # ---- telemetry ----
     if msg.topic == TOPIC_INPUT:
         try:
             data = json.loads(msg.payload.decode())
@@ -294,24 +193,37 @@ def on_message(c, userdata, msg):
             print(f"[bridge] bad sensor JSON: {e}")
             return
 
-        # Sanity: skip payloads that don't look like the ESP32's
         if "temperature" not in data and "temp" not in data:
             return
 
         reading = translate(data)
-        # Keep the raw analog flame so Calibrator's 3500-4095 gate can use it.
-        reading["_raw_flame"] = _f(data.get("flame", 4095))
 
-        # First-boot calibration path: buffer samples until we have 60 s,
-        # then run calibration once.
+        # ---- CALIBRATING: buffer only, publish nothing ----
         if _state == "CALIBRATING":
-            _cal_buf.append(to_cal_raw(reading))
-            if len(_cal_buf) == _cal_target:
-                threading.Thread(target=_run_calibration,
-                                 args=(list(_cal_buf),), daemon=True).start()
+            if _cal is None:
+                _cal = Calibrator(path=BASELINE_FILE)
+            raw = _cal_raw_from(data, reading)
+            if _cal._is_quiet(raw):
+                _cal.samples.append(raw)
+            else:
+                _cal.rejected += 1
+            _cal_buf.append(raw)
+
+            # Progress print ~once per second (not on every message)
+            now = time.time()
+            if now - _last_cal_progress_print > 1.0:
+                _last_cal_progress_print = now
+                pct = len(_cal_buf) / CAL_TARGET * 100
+                print(f"\r[bridge] calibrating… {pct:5.1f}%  "
+                      f"kept={len(_cal.samples):3d}  rejected={_cal.rejected:2d}",
+                      end="")
+
+            if len(_cal_buf) >= CAL_TARGET:
+                print()  # newline after progress line
+                _finish_calibration()
             return
 
-        # Normal path
+        # ---- RUNNING: identical to c1 ----
         try:
             result = agent.step(**{k: reading[k] for k in
                                    ("mq2", "mq135", "temp", "hum",
@@ -334,7 +246,7 @@ def start_mqtt():
 
 
 # ------------------------------------------------------------------
-# PUBLISHER  (unchanged shape from c1, plus `bounds` and `slow`)
+# PUBLISHER  (byte-identical to c1)
 # ------------------------------------------------------------------
 def publish(reading, result, raw=None):
     level  = result["level"]
@@ -345,7 +257,6 @@ def publish(reading, result, raw=None):
     buzzer  = acts.get("buzzer", False)
     load_pw = acts.get("relay_power", True)
 
-    # manual overrides (subject to safety interlocks)
     if manual["buzzer"] is not None and level != "RED":
         buzzer = manual["buzzer"]
     if manual["exhaust"] is not None and not (level == "RED" and hazard == "FIRE"):
@@ -364,10 +275,6 @@ def publish(reading, result, raw=None):
         "beliefs":     result["beliefs"],
         "rules_fired": result["rules_fired"],
 
-        # v3 extras — dashboard can ignore or surface as a health panel
-        "sensor_weights": result.get("sensor_weights", {}),
-        "bounds":         result.get("bounds", {}),
-
         "actions": {
             "exhaust_fan": bool(exhaust),
             "buzzer":      bool(buzzer),
@@ -377,9 +284,7 @@ def publish(reading, result, raw=None):
             "green_led":   bool(acts.get("green_led",  False)),
         },
 
-        "reading": {k: reading[k] for k in
-                    ("mq2", "mq135", "temp", "hum",
-                     "flame", "pir", "current")},
+        "reading": reading,
         "esp32_raw": raw or {},
     }
 
@@ -393,22 +298,18 @@ def publish(reading, result, raw=None):
 if __name__ == "__main__":
     start_mqtt()
 
-    # Decide initial state: if baseline.json already exists, go straight
-    # to RUNNING with a loaded agent. Otherwise wait for telemetry.
     if BASELINE_FILE.exists():
         try:
             agent = SentinelAI(force_recalibrate=False)
             _state = "RUNNING"
             print(f"[bridge] loaded {BASELINE_FILE} — running")
-            _publish_calstat({"state": "READY", "source": "file"})
         except Exception as e:
-            print(f"[bridge] failed to load baseline: {e} — will recalibrate")
+            print(f"[bridge] failed to load baseline ({e}) — will recalibrate")
             _state = "CALIBRATING"
     else:
-        print(f"[bridge] no {BASELINE_FILE} — waiting for 60 s of telemetry to calibrate")
+        print(f"[bridge] no {BASELINE_FILE} — calibrating from first "
+              f"{CAL_DURATION_S} s of telemetry (keep the room quiet)")
         _state = "CALIBRATING"
-        _publish_calstat({"state": "WAITING_FOR_TELEMETRY",
-                          "target": _cal_target})
 
     try:
         while True:
