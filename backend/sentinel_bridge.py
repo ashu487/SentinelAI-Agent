@@ -1,241 +1,238 @@
-"""
-sentinel_bridge.py
-------------------
-Reads raw sensor + status JSON from the ESP32, runs it through the
-SentinelAI Bayesian reasoning agent, and publishes the verdict to a
-separate topic for the dashboard.
-
-Topics:
-  IN       sentinel/sentinel/telemetry   (from ESP32)
-  OUT      sentinel/sentinel/agent       (to dashboard)
-  COMMAND  sentinel/sentinel/cmd         (manual overrides, optional)
-"""
-
-import sys
-import os
 import json
+import os
+import sys                                                    # ← add
+import threading
 import time
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 import paho.mqtt.client as mqtt
-from reasoning.bayes import SentinelAI
+
+# allow `from reasoning.bayes import ...` when run as
+# `python backend/sentinel_bridge.py` from the project root
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))  # ← add
+
+from reasoning.bayes import (Calibrator, SentinelAI, BASELINE_FILE,
+                             load_profile, save_profile)
 
 # ------------------------------------------------------------------
-# MQTT CONFIG
+# CONFIG
 # ------------------------------------------------------------------
-BROKER_HOST = "10.87.61.232"
+BROKER_HOST = os.environ.get("SENTINEL_BROKER", "172.20.10.10")
 BROKER_PORT = 1883
 MQTT_USER   = "sentinel"
-MQTT_PASS   = "87654321"
+MQTT_PASS   = "289961"
 
-DEVICE_ID       = "sentinel"
-TOPIC_INPUT     = f"sentinel/{DEVICE_ID}/telemetry"   # ESP32 -> bridge
-TOPIC_OUTPUT    = f"sentinel/{DEVICE_ID}/agent"       # bridge -> dashboard
-TOPIC_COMMAND   = f"sentinel/{DEVICE_ID}/cmd"         # dashboard -> bridge
+DEVICE_ID      = "sentinel"
+TOPIC_IN       = f"sentinel/{DEVICE_ID}/telemetry"
+TOPIC_CMD      = f"sentinel/{DEVICE_ID}/cmd"
+TOPIC_AGENT    = f"sentinel/{DEVICE_ID}/agent"
+TOPIC_OVERRIDE = f"sentinel/{DEVICE_ID}/override"
 
-# ------------------------------------------------------------------
-# AGENT — one persistent instance
-# ------------------------------------------------------------------
-agent = SentinelAI()
+CAL_SAMPLES     = 120    # 60 s at 2 Hz (ESP32 publishes every 500 ms)
+HEARTBEAT_S     = 5.0    # re-send actuator state; ESP32 forgets everything on reboot
+OVERRIDE_TTL_S  = 120.0  # manual overrides expire unless re-sent
 
-manual = {"buzzer": None, "exhaust": None, "load_power": None}
-
-# ------------------------------------------------------------------
-# MQTT CLIENT
-# ------------------------------------------------------------------
-client = mqtt.Client(client_id="sentinel-bridge")
-client.username_pw_set(MQTT_USER, MQTT_PASS)
-
-
-def on_connect(c, userdata, flags, rc):
-    if rc == 0:
-        print(f"[bridge] connected to {BROKER_HOST}:{BROKER_PORT}")
-        c.subscribe(TOPIC_INPUT)
-        c.subscribe(TOPIC_COMMAND)
-        print(f"[bridge] listening on {TOPIC_INPUT} and {TOPIC_COMMAND}")
-        print(f"[bridge] publishing to {TOPIC_OUTPUT}")
-    else:
-        print(f"[bridge] connect failed rc={rc}")
-
+LEVEL_RGB = {"GREEN": "#00FF00", "YELLOW": "#FFFF00", "RED": "#FF0000"}
+HAZARD_TEXT = {"SAFE": "All clear", "GAS_LEAK": "GAS LEAK",
+               "OVERHEAT": "OVERHEAT", "FIRE": "FIRE!"}
 
 # ------------------------------------------------------------------
-# FIELD TRANSLATION: ESP32 -> SentinelAI.step() args
+# STATE (guarded by `lock`)
 # ------------------------------------------------------------------
-def _f(v, d=0.0):
-    try:
-        return float(v)
-    except (TypeError, ValueError):
-        return d
+lock = threading.Lock()
+agent = None                 # SentinelAI once calibrated
+cal = None                   # Calibrator while calibrating
+cal_count = 0
+last_cmd = None              # last actuator command sent to ESP32
+last_cmd_sent = 0.0
+last_telemetry = 0.0
+overrides = {}               # key -> (value, monotonic timestamp)
 
-
-def _i(v, d=0):
-    try:
-        return int(float(v))
-    except (TypeError, ValueError):
-        return d
-
-
-# FLAME ANALOG -> DIGITAL CONVERSION
-FLAME_LOW  = 1200   # below this = flame detected
-FLAME_HIGH = 2500   # above this = no flame
-_last_flame_state = 1   # 1 = no flame (safe default)
-
-def analog_flame_to_digital(raw):
-    """
-    Convert a raw analog flame reading into 0 (flame detected) or 1
-    (no flame). Uses hysteresis so noise near the threshold doesn't
-    cause flip-flopping.
-    """
-    global _last_flame_state
-
-    try:
-        v = float(raw)
-    except (TypeError, ValueError):
-        return _last_flame_state   # keep previous value on garbage
-
-    if v <= FLAME_LOW:
-        _last_flame_state = 0      # definitely flame
-    elif v >= FLAME_HIGH:
-        _last_flame_state = 1      # definitely no flame
-    # else: leave _last_flame_state unchanged (hysteresis band)
-
-    return _last_flame_state
-
-def translate(data: dict) -> dict:
-    """
-    ESP32 flat payload -> SentinelAI.step() keyword args.
-
-    Field name mapping:
-      temperature -> temp
-      humidity    -> hum
-      motion      -> pir
-      flame       -> flame   (accepts 0/1 or raw ADC >1)
-
-    flame semantics: 0 = flame detected, 1 = no flame (matches bayes.py).
-    If raw ADC is received (>1), coerce by threshold.
-    """
-    raw_flame = data.get("flame", 1)
-    flame = analog_flame_to_digital(raw_flame)
-
+# ------------------------------------------------------------------
+# HELPERS
+# ------------------------------------------------------------------
+def to_sample(d):
+    """ESP32 telemetry JSON -> reasoning inputs. Flame stays RAW ADC (do not binarise)."""
+    def f(v, default=0.0):
+        try:
+            return float(v)
+        except (TypeError, ValueError):
+            return default
     return {
-        "mq2":     _f(data.get("mq2", 0)),
-        "mq135":   _f(data.get("mq135", 0)),
-        "temp":    _f(data.get("temperature", data.get("temp", 25))),
-        "hum":     _f(data.get("humidity",    data.get("hum", 50))),
-        "flame":   flame,
-        "pir":     _i(data.get("motion",      data.get("pir", 0))),
-        "current": _f(data.get("current", 0)),
+        "mq2":     f(d.get("mq2", 0)),
+        "mq135":   f(d.get("mq135", 0)),
+        "temp":    f(d.get("temperature", d.get("temp", 25))),
+        "hum":     f(d.get("humidity", d.get("hum", 50))),
+        "flame":   f(d.get("flame", 4095), 4095),
+        "pir":     int(f(d.get("motion", d.get("pir", 0)))),
+        "current": f(d.get("current", 0)),
     }
 
 
+def apply_overrides(cmd, level, hazard):
+    """Manual overrides keep the safety rules from v3 (no buzzer-off in RED, etc.)."""
+    now = time.monotonic()
+    active = {k: v for k, (v, t) in overrides.items() if now - t < OVERRIDE_TTL_S}
+    if "buzzer" in active and level != "RED":
+        cmd["buzzer"] = active["buzzer"]
+    if "exhaust" in active and not (level == "RED" and hazard == "FIRE"):
+        cmd["exhaust"] = active["exhaust"]
+    if "load_power" in active and hazard != "OVERHEAT":
+        cmd["load_power"] = active["load_power"]
+    return cmd
+
+
+def build_cmd(result):
+    """Reasoning result -> the exact JSON keys the ESP32 firmware reads from cmd."""
+    acts = result["actions"]
+    level, hazard = result["level"], result["hazard"]
+    cmd = {
+        "exhaust":      int(acts["exhaust_fan"]),
+        "buzzer":       int(acts["buzzer"]),
+        "sprinkler":    int(acts["sprinkler"]),
+        "load_power":   int(acts["relay_power"]),
+        "status_light": LEVEL_RGB[level],
+        "oled_message": f"{level}: {HAZARD_TEXT[hazard]}",
+        "source":      "agent",     # lets the bridge ignore its own cmd echoes
+    }
+    return apply_overrides(cmd, level, hazard)
+
+
+def send_cmd(cmd):
+    global last_cmd, last_cmd_sent
+    client.publish(TOPIC_CMD, json.dumps(cmd), qos=1)
+    last_cmd = cmd
+    last_cmd_sent = time.monotonic()
+
 # ------------------------------------------------------------------
-# MESSAGE HANDLER
+# TELEMETRY HANDLER
 # ------------------------------------------------------------------
-def on_message(c, userdata, msg):
-    # ---- manual override ----
-    if msg.topic == TOPIC_COMMAND:
-        try:
-            data = json.loads(msg.payload.decode())
-        except Exception as e:
-            print(f"[bridge] bad cmd JSON: {e}")
+def handle_telemetry(data):
+    global agent, cal, cal_count, last_telemetry
+    s = to_sample(data)
+    with lock:
+        last_telemetry = time.monotonic()
+
+        # ---- calibration: collect quiet samples, publish nothing ----
+        if agent is None:
+            if cal is None:
+                cal = Calibrator()
+                cal_count = 0
+                print("[bridge] calibrating: keep the room quiet for 60 s")
+            cal.add(s)
+            cal_count += 1
+            if cal_count % 20 == 0:
+                print(f"[bridge] calibrating {cal_count}/{CAL_SAMPLES} "
+                      f"kept={len(cal.samples)} rejected={cal.rejected}")
+            if cal_count >= CAL_SAMPLES:
+                try:
+                    profile = cal.finish()
+                    save_profile(profile, n_samples=len(cal.samples), rejected=cal.rejected)
+                    agent = SentinelAI(profile=profile)
+                    print(f"[bridge] calibration done -> {BASELINE_FILE}")
+                except RuntimeError as e:
+                    print(f"[bridge] calibration failed: {e}. Restarting window.")
+                cal, cal_count = None, 0
             return
-        for k in manual:
-            if k in data:
-                manual[k] = bool(data[k])
-        print(f"[bridge] manual override: {manual}")
+
+        # ---- running: reason, then drive actuators ----
+        result = agent.step(**s)
+        agent_payload = dict(result, device_id=DEVICE_ID,
+                             timestamp=int(time.time() * 1000), reading=s)
+        client.publish(TOPIC_AGENT, json.dumps(agent_payload), qos=1)
+
+        cmd = build_cmd(result)
+        if cmd != last_cmd or time.monotonic() - last_cmd_sent > HEARTBEAT_S:
+            send_cmd(cmd)
+
+        print(f"[bridge] {result['level']:6} {result['hazard']:9} "
+              f"risk={result['risk_score']:5}  exhaust={cmd['exhaust']} "
+              f"load={cmd['load_power']} buzzer={cmd['buzzer']} sprinkler={cmd['sprinkler']}")
+
+
+def handle_override(data):
+    now = time.monotonic()
+    with lock:
+        if data.get("clear"):
+            overrides.clear()
+            print("[bridge] overrides cleared")
+            return
+        for key in ("buzzer", "exhaust", "load_power"):
+            if key in data:
+                if data[key] is None:
+                    overrides.pop(key, None)
+                else:
+                    overrides[key] = (int(bool(data[key])), now)
+        print(f"[bridge] overrides: {overrides}")
+
+# ------------------------------------------------------------------
+# MQTT
+# ------------------------------------------------------------------
+def on_connect(client, userdata, flags, reason_code, properties):
+    if reason_code.is_failure:
+        print(f"[bridge] connect failed: {reason_code}")
+        return
+    print(f"[bridge] connected to {BROKER_HOST}:{BROKER_PORT}")
+    client.subscribe([(TOPIC_IN, 1), (TOPIC_CMD, 1), (TOPIC_OVERRIDE, 1)])
+
+
+def on_message(client, userdata, msg):
+    try:
+        data = json.loads(msg.payload.decode())
+    except (ValueError, UnicodeDecodeError):
+        print(f"[bridge] bad JSON on {msg.topic}")
+        return
+    if not isinstance(data, dict):
         return
 
-    # ---- raw telemetry from ESP32 ----
-    if msg.topic == TOPIC_INPUT:
-        try:
-            data = json.loads(msg.payload.decode())
-        except Exception as e:
-            print(f"[bridge] bad sensor JSON: {e}")
-            return
-
-        # Sanity: skip payloads that don't look like the ESP32's
-        if "temperature" not in data and "temp" not in data:
-            return
-
-        reading = translate(data)
-
-        try:
-            result = agent.step(**reading)
-        except Exception as e:
-            print(f"[bridge] agent.step failed: {e}  reading={reading}")
-            return
-
-        publish(reading, result, raw=data)
-        return
+    if msg.topic == TOPIC_IN:
+        if "temperature" in data or "temp" in data:
+            handle_telemetry(data)
+    elif msg.topic == TOPIC_OVERRIDE:
+        handle_override(data)
+    elif msg.topic == TOPIC_CMD and data.get("source") != "agent":
+        handle_override(data)   # a dashboard that still writes to cmd still works
 
 
+client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, client_id="sentinel-bridge")
+client.username_pw_set(MQTT_USER, MQTT_PASS)
 client.on_connect = on_connect
 client.on_message = on_message
 
-
-def start_mqtt():
-    client.connect(BROKER_HOST, BROKER_PORT, keepalive=30)
-    client.loop_start()
-
-
 # ------------------------------------------------------------------
-# PUBLISHER
-# ------------------------------------------------------------------
-def publish(reading, result, raw=None):
-    level  = result["level"]
-    hazard = result["hazard"]
-    acts   = result["actions"]
-
-    exhaust = acts.get("exhaust_fan", False)
-    buzzer  = acts.get("buzzer", False)
-    load_pw = acts.get("relay_power", True)
-
-    # manual overrides (subject to safety interlocks)
-    if manual["buzzer"] is not None and level != "RED":
-        buzzer = manual["buzzer"]
-    if manual["exhaust"] is not None and not (level == "RED" and hazard == "FIRE"):
-        exhaust = manual["exhaust"]
-    if manual["load_power"] is not None and hazard != "OVERHEAT":
-        load_pw = manual["load_power"]
-
-    payload = {
-        "timestamp":   int(time.time() * 1000),
-        "device_id":   DEVICE_ID,
-
-        "level":       level,
-        "hazard":      hazard,
-        "confidence":  result["confidence"],
-        "risk_score":  result["risk_score"],
-        "beliefs":     result["beliefs"],
-        "rules_fired": result["rules_fired"],
-
-        "actions": {
-            "exhaust_fan": bool(exhaust),
-            "buzzer":      bool(buzzer),
-            "relay_power": bool(load_pw),
-            "red_led":     bool(acts.get("red_led",    False)),
-            "yellow_led":  bool(acts.get("yellow_led", False)),
-            "green_led":   bool(acts.get("green_led",  False)),
-        },
-
-        "reading": reading,
-        "esp32_raw": raw or {},
-    }
-
-    client.publish(TOPIC_OUTPUT, json.dumps(payload), qos=1)
-    print(f"[bridge] → {level:6} {hazard:9} risk={result['risk_score']:5}  "
-          f"fan={payload['actions']['exhaust_fan']} "
-          f"buzzer={payload['actions']['buzzer']}")
-
-
+# MAIN
 # ------------------------------------------------------------------
 if __name__ == "__main__":
-    start_mqtt()
+    profile = load_profile(BASELINE_FILE)
+    if profile is not None:
+        agent = SentinelAI(profile=profile)
+        print(f"[bridge] loaded baseline from {BASELINE_FILE}")
+    else:
+        print("[bridge] no valid baseline; will calibrate from live telemetry")
+
+    while True:
+        try:
+            client.connect(BROKER_HOST, BROKER_PORT, keepalive=30)
+            break
+        except OSError as e:
+            print(f"[bridge] cannot reach broker {BROKER_HOST}: {e}; retrying in 3 s")
+            time.sleep(3)
+
+    client.loop_start()           # network thread; auto-reconnects on drop
+    stale_warned = False
     try:
         while True:
             time.sleep(1)
+            with lock:
+                # Re-send the current actuator state so the ESP32 stays in sync
+                # even if it rebooted or a message was lost.
+                if last_cmd is not None and time.monotonic() - last_cmd_sent > HEARTBEAT_S:
+                    send_cmd(last_cmd)
+                stale = agent is not None and time.monotonic() - last_telemetry > 5
+                if stale and not stale_warned:
+                    print("[bridge] WARNING: no telemetry for 5 s; actuators hold last state")
+                stale_warned = stale
     except KeyboardInterrupt:
         print("\n[bridge] stopping")
+    finally:
         client.loop_stop()
         client.disconnect()
